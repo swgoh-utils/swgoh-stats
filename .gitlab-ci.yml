@@ -55,7 +55,6 @@ semantic-release:
         - node_modules/
   script:
     - apk add bash
-    - npm install
-    - npm run semantic-release
+    - npx semantic-release
   only:
     - master
