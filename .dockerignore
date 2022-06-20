@@ -1,3 +1,7 @@
+.gitignore
+.dockerignore
+DockerFile
+release.config.js
 .git/
 dist/
 bin/
@@ -7,3 +11,4 @@ __mocks__/
 *.yml
 *.md
 *.test.js
+*.sh
