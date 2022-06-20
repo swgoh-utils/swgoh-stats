@@ -1,0 +1,14 @@
+.gitignore
+.dockerignore
+DockerFile
+release.config.js
+.git/
+dist/
+bin/
+node_modules/
+coverage/
+__mocks__/
+*.yml
+*.md
+*.test.js
+*.sh

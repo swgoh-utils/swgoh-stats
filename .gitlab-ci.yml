@@ -1,0 +1,61 @@
+workflow:
+  rules:
+    # skip CI for tags
+    - if: $CI_COMMIT_TAG
+      when: never
+    # skip CI for merge requests
+    - if: $CI_MERGE_REQUEST_ID
+      when: never
+    # run for all other cases
+    - when: always
+
+image: node:latest
+
+stages:
+  - setup
+  - build
+  - semantic-release
+
+variables:
+  CONTAINER_TEST_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+  CONTAINER_BRANCH_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+
+setup:
+  stage: setup
+  cache:
+    # node_modules cache specific to jobs in this branch
+    - key: $CI_COMMIT_REF_SLUG
+      paths:
+        - node_modules/
+  script:
+    - npm install
+
+docker-build:
+  # Official docker image.
+  image: docker:latest
+  stage: build
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  script:
+    - docker build --pull -t $CONTAINER_TEST_IMAGE .
+    - docker push $CONTAINER_TEST_IMAGE
+    - docker tag $CONTAINER_TEST_IMAGE $CONTAINER_BRANCH_TAG
+    - docker push $CONTAINER_BRANCH_TAG
+
+semantic-release:
+  image: registry.gitlab.com/munelear/heroku-cli:latest
+  stage: semantic-release
+  services:
+    - docker:dind
+  cache:
+    - key: $CI_COMMIT_REF_SLUG
+      paths:
+        - node_modules/
+  script:
+    - apk add bash
+    - npm install
+    - npm run semantic-release
+  only:
+    - master

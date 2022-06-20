@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Crinolo's SWGOH Tools</title>
+    <meta name="description" content="Stat Calculator made by Crinolo for EA's Star Wars Galaxy of Heroes">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+
+    <!-- import the webpage's stylesheet -->
+    <link rel="stylesheet" href="/style.css">
+  </head>
+  <body>
+    <header>
+      <h1>
+        SWGoH Stat Calculator
+      </h1>
+    </header>
+
+    <main>
+      <p>
+        This API can be accessed through either POST requests or GET requests.  The available endpoints for each can be found under <a href="#requests">API Requests</a> below:
+      </p>
+
+      <div id="requests">
+        <h2>
+          API Requests:
+        </h2>
+        All paths below extend the path for this page: <a class="refLink fullLink" data-path="/"></a>
+        <ul>
+          <li><b>POST:</b>
+            <div>
+              <br>All POST data should have Content-Type of 'application/json', and be formatted the same as the objects returned by <a href="https://api.swgoh.help/swgoh">api.swgoh.help</a> or swgoh-comlink.
+              <br>See <a href="#formats">Accepted Unit Formats</a> for a description of what those objects look like, and which properties must be included here.
+            </div>
+            <dl>
+              <dt><a class="refLink" data-path="/api"></a></dt>
+              <dd>Returns stats for each unit (characters and ships) sent in request body</dd>
+              <dt><a class="refLink" data-path="/api/characters"></a></dt>
+              <dd>Returns stats for each character sent in request body</dd>
+              <dt><a class="refLink" data-path="/api/ships"></a></dt>
+              <dd>Returns stats for each ship sent in request body</dd>
+            </dl>
+          </li>
+          <li><b>GET:</b>
+            <div>
+              <br><i>Static Data</i> -- defaults to maxium non-modded stats.
+            </div>
+            <dl>
+              <dt><a class="refLink" data-path="/api"></a></dt>
+              <dd>Returns stats for each known unit (characters and ships)</dd>
+              <dt><a class="refLink" data-path="/api/characters"></a></dt>
+              <dd>Returns stats for each known character</dd>
+              <dt><a class="refLink" data-path="/api/ships"></a></dt>
+              <dd>Returns stats for each known ship</dd>
+              <dt><a class="refLink" data-path="/api/characters/{baseID}"></a></dt>
+              <dd>Returns stats for character with base ID of {baseID}</dd>
+              <dt><a class="refLink" data-path="/api/ships/{baseID}"></a></dt>
+              <dd>Returns stats for ship with base ID of {baseID}</dd>
+            </dl>
+          </li>
+        </ul>
+      </div>
+      <div id="options">
+        <h2>
+          Query String Options:
+        </h2>
+        The following options can be added to the query string of the request for any endpoints.<br>
+        For Example: <a class="refLink" data-path="/api/characters/MISSIONVAO?flags=enums,gameStyle,scaled&useValues={char:{rarity:6}}"></a>
+        <ul>
+          <li><b>flags</b> -- a comma-separated list of the following options:
+            <ul>
+              <li><i>gameStyle</i>: adjusts the stat objects to return 'final' stats (the total seen in-game) instead of 'base' stats.  Also applies same conversion as <i>percentVals</i>.<br>
+                <span class="tab" />Example: <a class="refLink" data-path="/api/characters/DARTHSION?flags=gameStyle"></a></li>
+              <li><i>calcGP</i>: Runs GP calculations along with any other calculations, and stores the resulting value in the unit's '.gp' property.  Ship GP calculations require the crew to also be provided in the requested roster.</li>
+              <li><i>onlyGP</i>: Same as calcGP, but skips all other calculations.</li>
+              <li><i>withoutModCalc</i>: skips calculating mod stats on characters to speed up the calculation.  Irrelevent to GET requests.</li>
+              <li><i>percentVals</i>: converts Crit Chance and Armor/Resistance from their flat values (default) to the percent values as displayed in-game.<br>
+                <span class="tab" />Example: <a class="refLink" data-path="/api?flags=percentVals"></a></li>
+              <li><i>useMax</i>: calculates stats based on the maximum values for each unit requested.  Overrides the <i>useValues</i> options.<br>
+                <span class="tab" />Example: <a class="refLink" data-path="/api/characters/JEDIKNIGHTREVAN?flags=useMax"></a>
+                (NOTE: on Static Data GET requests, <i>useMax</i> is implied if <i>useValues</i> is missing)</li>
+              <li><i>scaled</i>: returns all stats as their 'scaledValueDecimal' equivalents -- 10,000 times the common value.  Non-modded stats should all be integers at this scale.<br>
+                <span class="tab" />Example: <a class="refLink" data-path="/api/characters?flags=scaled"></a></li>
+              <li><i>unscaled</i>: returns all stats as their 'unscaledDecimalValue' equivalents -- 100,000,000 times the common value.  All stats should be integers at this scale.<br>
+                <span class="tab" />Example: <a class="refLink" data-path="/api/ships?flags=unscaled"></a></li>
+              <li><i>statIDs</i>: leaves the stat object unlocalized and indexed by the stat ID.  Ignores any specified <i>language</i> option.<br>
+                <span class="tab" />Example: <a class="refLink" data-path="/api/ships/CAPITALCHIMAERA?flags=statIDs"></a></li>
+              <li><i>enums</i>: indexes the stat object by the unlocalized enum string used as a key in the game's localization files.  Ignores any specified <i>language</i> option.<br>
+                <span class="tab" />Example: <a class="refLink" data-path="/api/characters/HUMANTHUG?flags=enums"></a></li>
+              <li><i>noSpace</i>: in conjunction with the <i>language</i> option below, this flag will convert the localization string into standard camelCase with no spaces.<br>
+                <span class="tab" />Example: <a class="refLink" data-path="/api/ships/HOUNDSTOOTH?flags=noSpace&language=eng_us"></a></li>
+            </ul>
+          </li>
+          <li><b>useValues</b> -- a JSON-style object (quotes optional, brackets required) with parameters to use for all units in the request.
+            <div class="tab">
+              The object is of the following structure:
+              <pre><code id="useValuesSample"></code></pre>
+              Any properties can be skipped, and the default values will be used instead (max values for GET requests, unit values for POST data).<br>
+              Some properties have multiple ways to define them, as follows:
+              <ul>
+                <li><i>equipped</i>: (defaults to "all")<br>
+                  <span class="tab" /><b>"all"</b> defines all possible gear pieces are equipped.<br>
+                  <span class="tab" /><b>"none"</b> defines no gear pieces are equipped.<br>
+                  <span class="tab" />An <b>Array</b> can define which gear slots have gear equipped, i.e. [1,2,6] says the top two and the bottom right slots are filled.<br>
+                  <span class="tab" />An <b>integer</b> 1-6 can define how many pieces are equipped, without specific slots (crew definition only).
+                </li>
+                <li><i>skills</i>: (defaults to "max")<br>
+                  <span class="tab" /><b>"max"</b> defines all skills are maxed.<br>
+                  <span class="tab" /><b>"maxNoZeta"</b> defines all non-zeta skills are maxed, while Zeta abilities are still rank 7.<br>
+                  <span class="tab" />An <b>integer</b> 1-8 defines all skills to be at that rank if possible, or as close to it if they max at a lower rank (such as contracts).
+                </li>
+                <li><i>relic</i>: (defaults to 9)<br>
+                  <span class="tab" /><b>1</b> - Relic Locked (gear &lt;13).<br>
+                  <span class="tab" /><b>2</b> - Relic Unlocked (but still level 0).<br>
+                  <span class="tab" /><b>3-9</b> - Relic Levels 1-7, respectively.  'Tier' value here is Relic Level + 2, as defined in game data.
+                </li>
+              </ul>
+              Example: <a class="refLink" data-path="/api/ships/HOUNDSTOOTH?useValues={ship:{rarity:6},crew:{gear:11,equipped:none,skills:maxNoZeta}}"></a>
+            </div>
+          </li>
+          <li><b>language</b> -- a string with the language code for the desired language.
+            <div class="tab">
+              The stat object will be indexed using the localized stat names for that language.  The supported languages are included in <a class="refLink" data-path="/dataVersion.json"></a>.
+              If no language is sent (and neither the <i>statIDs</i> or <i>enums</i> flag is used), <i>eng_us</i> will be used by default.<br>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div id="formats">
+        <h2>
+          Accepted Unit Formats:
+        </h2>
+        All objects from <a href="https://api.swgoh.help/swgoh">api.swgoh.help</a>'s or swgoh-comlink's <b>/player</b> endpoint are accepted in POST data.
+        <br>
+        The main types of object returned from that endpoint is referred to here as the <i>Player</i>-style (the <b>/player</b> endpoint)
+        The minimum required data is outlined below.  The <i>useValues</i> options may allow you to skip some of these fields, if necessary.
+        <ul>
+          <li>
+          <b>Player-Style</b>
+          <p>
+            Only the <b>.roster</b> object within the player profile returned by <b>/player</b> is required and outlined below, but the full object -- an array of full player profiles -- is also accepted.
+          </p>
+          <pre><code id="playerSample"></code></pre>
+        </li>
+        </ul>
+      </div>
+      <div id="data">
+        <h2>
+          Game Data Assets:
+        </h2>
+        All the raw game data used by this API is exposed on this site as well.
+        <br><br>
+        However, the raw JSON data needed to use the calculator can be requested from the following GET endpoints:
+        <ul>
+          <li><a class="refLink" data-path="/gameData.json"></a> --
+            The base 'gameData' object used by the stat calculator.
+            Built from many collections in the game <b>/data</b> endpoint.
+          </li>
+          <li><a class="refLink" data-path="/dataVersion.json"></a> --
+            The current data version info, along with the supported localization languages.
+          </li>
+          <li><a class="refLink" data-path="/eng_us.json"></a> --
+            The English Localization object used.
+          </li>
+          <li><a class="refLink" data-path="/statEnum.json"></a> --
+            The Stat Enum object from in-game data.  Text is formatted to match that used in the raw localization files that can be pulled off your device, mapping stat enums to the localization keys.
+          </li>
+        <!--
+          <li><a class="refLink" data-path="/"></a> --
+
+          </li>
+        -->
+        </ul>
+      </div>
+      <!--<pre><code id="testSample"></code></pre> -->
+    </main>
+
+    <script>
+      // On load, set reference links to values defined by the 'data-path' attribute
+
+      // extract site root path, removing an ending '/' or any existing query string.
+      let [, site] = /(.+?)\/?(?:\?.*)?$/.exec(window.location.href);
+
+      // set relative links
+      [].forEach.call(document.getElementsByClassName("refLink"), link => {
+        let path = link.getAttribute("data-path");
+        link.innerHTML = path;
+        link.href = site + path;
+      });
+      // change text for 'fullLinks' to include the full path, not relative
+      [].forEach.call(document.getElementsByClassName("fullLink"), link => {
+        link.innerHTML = link.href;
+      });
+    </script>
+    <script>
+      // PrettyPrint JSON code samples (modified from here: https://blog.centerkey.com/2013/05/javascript-colorized-pretty-print-json.html )
+      var jsonPrettyPrint = {
+        replacer: function(match, pIndent, pKey, pVal, pEnd) {
+          var key = '<span class=json-key>';
+          var val = '<span class=json-value>';
+          var str = '<span class=json-string>';
+          var tok = '<span class=json-token>';
+          var r = pIndent || '';
+          var tokVal;
+          if ( (!pKey || pKey == '"etc": ') && pVal == '"etc"' )
+            r += "...";
+          else {
+            if (pKey) {
+              tokVal = isToken(pKey);
+              r += tokVal ? tok + tokVal + '</span>: ' : key + pKey.replace(/"([\w]+)"|("[\w ]+")/g, '$1$2</span>');
+            }
+            if (pVal) {
+              tokVal = isToken(pVal);
+              r += (tokVal ? tok + tokVal : (pVal[0] == '"' ? str : val) + pVal) + '</span>';
+            }
+          }
+          return r + (pEnd || '');
+
+          function isToken(s) {
+            var test = /^"(&lt;.*&gt;)"/.exec(s);
+            return test ? test[1] : null;
+          }
+        },
+        toHtml: function(obj, commentsArray) {
+          console.log(`Converting object:\n${JSON.stringify(obj, null, 2)}`);
+          var jsonLine =
+            /^( *)("[\w &;]+": )?("[^"]*"|[\w.+-]*)?([,[{])?$/gm;
+          var str = JSON.stringify(obj, null, 2)
+            .replace(/&/g, '&amp;').replace(/\\"/g, '&quot;')
+            .replace(/</g, '&lt;').replace(/>/g, '&gt;')
+            .replace(jsonLine, jsonPrettyPrint.replacer)
+            .replace(/( +)(\.{3})\n(\s*)/g, '$3$2 ')
+            .replace(/([{[])\s+(\.{3})/g, '$1 $2');
+          if (commentsArray) str = addComments(str, commentsArray);
+          return str;
+
+          function addComments(str, list) {
+            var lines = str.split('\n');
+            str = '';
+            lines.forEach( (line, index) => {
+              var c;
+              if (c = list[index]) {
+                var p = ' ';
+                if (c.constructor === Array) {
+                  p = p.padStart(c[0] > 1 ? c[0] : 1);
+                  c = c[1];
+                }
+                line += p + '<span class=json-comment>//' + c + '</span>';
+              }
+              str += line + '\n';
+            });
+            return str;
+          }
+        }
+      };
+
+      // fill out code samples
+      // let elem;
+      // elem = document.getElementById("testSample");
+      // elem.innerHTML = jsonPrettyPrint.toHtml({ active: true, test: "hi, there", codes: [48348, 28923, 39080,["etc"], "etc"], "city of Origin": "<string>", "<BaseID>": { etc: "etc" }, etc: "etc" });
+      document.getElementById("useValuesSample").innerHTML = jsonPrettyPrint.toHtml({
+        char: { // used when calculating character stats
+          rarity: "<integer>",
+          level: "<integer>",
+          gear: "<integer>",
+          equipped: "<String || Array>", // See Below
+          relic: "<integer>"
+        },
+        ship: { // used when calculating ship stats
+          rarity: "<integer>",
+          level: "<integer>"
+        },
+        crew: { // used for characters when calculating ship stats
+          rarity: "<integer>",
+          level: "<integer>",
+          gear: "<integer>",
+          equipped: "<String || Array || integer>", // See Below
+          skills: "<String || integer>", // See Below
+          modRarity: "<integer>",
+          modLevel: "<integer>",
+          relic: "<integer>"
+        }
+      },{1:[11,"used when calculating character stats"],
+         2:[1," 1-7 (default 7)"],
+         3:[2," 1-90 (default 85)"],
+         4:[3," 1-12 (default 12)"],
+         5:[1," See Below"],
+         6:[2," 1-9 (See Below)"],
+         8:[11,"used when calculating ship stats"],
+         9:[1," 1-7 (default 7)"],
+         10:[3," 1-90 (default 85)"],
+         12:[11,"used for characters when calculating ship stats"],
+         13:[1," 1-7 (default 7)"],
+         14:[2," 1-90 (default 85)"],
+         15:[3," 1-12 (default 12)"],
+         16:[1," See Below"],
+         17:[1," See Below"],
+         18:[1," 1-7 (default 6)"],
+         19:[2," 1-15 (default 15)"],
+         20:[2," 1-9 (See Below)"]
+        });
+      document.getElementById("playerSample").innerHTML = jsonPrettyPrint.toHtml([
+        {
+          defId: "<string>",
+          rarity: "<integer>",
+          level: "<integer>",
+          gear: "<integer>",
+          equipped: [
+            {
+              equipmentId: "<string>"
+            },
+            "etc"
+          ],
+          skills: [
+            {
+              tier: "<integer>"
+            }
+          ],
+          mods: [
+            {
+              pips: "<integer>",
+              set: "<integer>",
+              level: "<integer>",
+              primaryStat: {
+                unitStat: "<integer>",
+                value: "<number>"
+              },
+              secondaryStat: [
+                {
+                  unitStat: "<integer>",
+                  value: "<number>"
+                },
+                "etc"
+              ]
+            },
+            "etc"
+          ],
+          relic: {
+            currentTier: "<integer>"
+          }
+        },
+        "etc"
+      ],{0:[26,' Array of Unit Objects:'],
+         2:[9,' Base ID'],
+         3:[7,' Star Count (1-7)'],
+         4:[8,' Level (1-90)'],
+         5:[9,' Gear Level (1-12)'],
+         6:[14,' Array of Objects'],
+         8:[2,' Gear ID'],
+         11:[16,' Array of Skill Objects:'],
+         13:[8,' Skill level (1-8)'],
+         16:[18,' Array of Mod Objects:'],
+         18:[7,' Mod Rarity (1-7)'],
+         19:[8,' Mod Set ID (1-8)'],
+         20:[6,' Mod Level (1-15)'],
+         21:[9,' Stat Object:'],
+         22:[3,' Stat ID (1-59)'],
+         23:[8,' Stat Value (scaled as displayed in-game)'],
+         25:[7,' Array of Stat Objects:'],
+         27:[1,' Stat ID (1-59)'],
+         28:[6,' Stat Value (scaled as displayed in-game)']
+        });
+      document.getElementById("testSample").innerHTML = jsonPrettyPrint.toHtml({
+        key: 123,
+        key2: "string",
+        key3: "<token>"
+      });
+    </script>
+  </body>
+</html>

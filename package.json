@@ -1,0 +1,35 @@
+{
+  "name": "swgoh-stats",
+  "version": "1.0.0",
+  "description": "A Node app for calculating unit stats in EA's Star Wars Galaxy of Heroes.",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@swgoh-tools/comlink": "^1.0.2",
+    "body-parser": "^1.20.0",
+    "compression": "^1.7.4",
+    "express": "^4.18.1",
+    "helmet": "^5.1.0",
+    "jszip": "^3.10.0",
+    "mkdirp": "^1.0.4",
+    "swgoh-stat-calc": "github:munelear/swgoh-stat-calc#5aa9cdb"
+  },
+  "engines": {
+    "node": ">=16"
+  },
+  "repository": {
+    "url": "https://gitlab.com/swgoh-tools/swgoh-stats"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@semantic-release/changelog": "^6.0.1",
+    "@semantic-release/exec": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/gitlab": "^9.3.2",
+    "conventional-changelog-conventionalcommits": "^5.0.0",
+    "semantic-release": "^19.0.3"
+  }
+}
