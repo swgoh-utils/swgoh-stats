@@ -16,7 +16,7 @@ module.exports = {
         // update package.json but do not publish to npm
         "npmPublish": false,
       }
-    ]
+    ],
     [
       '@semantic-release/exec',
       {
