@@ -148,7 +148,7 @@ module.exports = class DataBuilder {
 
     try {
       version = await this.clientStub.getMetaData();
-      this._enablePolling(callback);
+      this._enablePolling(callback, version);
     } catch(error) {
       throw(error);
     }
@@ -159,24 +159,41 @@ module.exports = class DataBuilder {
     };
   }
 
-  _handleVersionNotification({latestGamedataVersion, latestLocalizationBundleVersion}, callback) {
-    const updated = this._versionCheck(latestGamedataVersion, latestLocalizationBundleVersion);
-    const versionString = `Game: ${latestGamedataVersion}, Localization: ${latestLocalizationBundleVersion}`;
+  _versionCheck(oldVersion, newVersion) {
+    let updated = false;
+
+    if (!isStringEqual(oldVersion.latestGamedataVersion, newVersion.latestGamedataVersion)) {
+      updated = true;
+      oldVersion.latestGamedataVersion = newVersion.latestGamedataVersion;
+    }
+
+    if (!isStringEqual(oldVersion.latestLocalizationBundleVersion, newVersion.latestLocalizationBundleVersion)) {
+      updated = true;
+      oldVersion.latestLocalizationBundleVersion = newVersion.latestLocalizationBundleVersion;
+    }
+
+    return updated;
+  };
+
+  _handleVersionNotification(version, newVersion, callback) {
+    const updated = this._versionCheck(version, newVersion);
+    const versionString = `Game: ${version.latestGamedataVersion}, Localization: ${version.latestLocalizationBundleVersion}`;
     if (updated) {
       console.log(`Received new version from update service: ${versionString}`);
-      callback(this.version);
+      callback(version);
     } else {
       console.debug(`Received existing version from update service: ${versionString}`);
     }
   }
 
-  _enablePolling(callback) {
+  _enablePolling(callback, { latestGamedataVersion, latestLocalizationBundleVersion }) {
     const self = this;
+    let version = { latestGamedataVersion, latestLocalizationBundleVersion };
     this._updaterInterval = setInterval(async () => {
       try {
-        const version = await self.clientStub.getMetaData();
+        const newVersion = await self.clientStub.getMetaData();
 
-        self._handleVersionNotification(version, callback);
+        self._handleVersionNotification(version, newVersion, callback);
       } catch(error) {
         self.logger.error(`Unable to fetch metadata: ${error.message}`);
       }
