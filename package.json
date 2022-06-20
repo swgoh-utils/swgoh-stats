@@ -1,6 +1,6 @@
 {
   "name": "swgoh-stats",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A Node app for calculating unit stats in EA's Star Wars Galaxy of Heroes.",
   "main": "app.js",
   "scripts": {

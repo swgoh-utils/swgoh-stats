@@ -1,3 +1,10 @@
+## [1.0.1](https://gitlab.com/swgoh-tools/swgoh-stats/compare/v1.0.0...v1.0.1) (2022-06-20)
+
+
+### Bug Fixes
+
+* add missing version checking function ([391e993](https://gitlab.com/swgoh-tools/swgoh-stats/commit/391e99377f7f44fc51326e537c9f7b01cfc03d33))
+
 # 1.0.0 (2022-06-20)
 
 
