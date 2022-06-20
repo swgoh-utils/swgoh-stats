@@ -5,11 +5,21 @@ COPY package*.json ./
 RUN npm install --omit=dev
 
 FROM node:16-alpine AS app
-WORKDIR /usr/src/app
+WORKDIR /app
 
-COPY --from=builder node_modules .
+COPY --from=builder node_modules node_modules/
 # copy the rest after
 COPY . .
+RUN chown node:node statCalcData
+VOLUME ["statCalcData"]
+
+RUN apk update && \
+  # wrap process in --init in order to handle kernel signals
+  # https://github.com/krallin/tini#using-tini
+  apk add --no-cache tini && \
+  rm -rf /var/cache/apk/*
 
 USER node
+
+ENTRYPOINT ["/sbin/tini", "--"]
 CMD [ "node", "app.js" ]

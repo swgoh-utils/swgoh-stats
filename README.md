@@ -7,7 +7,6 @@ A microservice version of Crinolo's stat calc which works directly with the swgo
 - PORT - the port that the service will listen to
 - CLIENT_URL - the url of the swgoh-comlink service to use for building the game data
 - DATA_PATH - used to set the directory where game data assets are stored. When run as a docker container, this should be defined as a volume with an absolute path on the local host, such as `-v $(pwd)/statCalcData:/app/statCalcData`.  The default value is the `statCalcData` directory in the current working directory, which in docker is `/app`.
-- LOG_LEVEL - values are error, warn, debug, info.  Defaults to info.
 - UPDATE_INTERVAL - how often to check for game data updates, in minutes.  Defaults to 5 minutes.
 - MAX_LEVEL - defaults to 85
 - MAX_GEAR_LEVEL - defaults to 13
