@@ -8,12 +8,12 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@swgoh-tools/comlink": "^1.0.2",
+    "@swgoh-tools/comlink": "^1.1.0",
     "body-parser": "^1.20.0",
     "compression": "^1.7.4",
     "express": "^4.18.1",
-    "helmet": "^5.1.0",
-    "jszip": "^3.10.0",
+    "helmet": "^5.1.1",
+    "jszip": "^3.10.1",
     "mkdirp": "^1.0.4",
     "swgoh-stat-calc": "github:munelear/swgoh-stat-calc#5aa9cdb"
   },
@@ -28,7 +28,7 @@
     "@semantic-release/changelog": "^6.0.1",
     "@semantic-release/exec": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
-    "@semantic-release/gitlab": "^9.3.2",
+    "@semantic-release/gitlab": "^9.4.1",
     "conventional-changelog-conventionalcommits": "^5.0.0",
     "semantic-release": "^19.0.3"
   }
