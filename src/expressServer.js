@@ -12,8 +12,11 @@ const dataBuilder = new DataBuilder({
   dataPath: dataPath,
   updateInterval: process.env.UPDATE_INTERVAL,
   url: process.env.CLIENT_URL,
+  accessKey: process.env.ACCESS_KEY,
+  secretKey: process.env.SECRET_KEY,
   zipGameData: process.env.ZIP_GAME_DATA,
-  useSegments: process.env.USE_SEGMENTS
+  useSegments: process.env.USE_SEGMENTS,
+  useUnzip: process.env.USE_UNZIP
 });
 
 const statCalculator = require('swgoh-stat-calc');

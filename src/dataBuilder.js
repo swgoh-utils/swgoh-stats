@@ -4,6 +4,8 @@ const fs = require('fs');
 const path = require('path');
 const util = require('util');
 const JSZip = require('jszip');
+const { createInterface } = require('readline');
+const { once } = require('events');
 const pipeline = util.promisify(require('stream').pipeline);
 const statEnumMap = require('./statEnumMap.json');
 const statEnum = {};
@@ -19,15 +21,70 @@ for (const [key, value] of Object.entries(statEnumMap)) {
   }
 }
 
+const processLocalizationLine = (line) => {
+  if (line.startsWith('#')) return;
+  let [ key, val ] = line.split(/\|/g).map(s => s.trim());
+  if (!key || !val) return;
+
+  if (localizationMap[key]) {
+    val = val.replace(/^\[[0-9A-F]*?\](.*)\s+\(([A-Z]+)\)\[-\]$/, (m,p1,p2) => p1);
+    return [key, val];
+  }
+}
+
+const processStreamByLine = async (fileStream) => {
+  const langMap = {};
+
+  try {
+    const rl = createInterface({
+      input: fileStream,
+      //crlfDelay: Infinity
+    });
+
+    rl.on('line', (line) => {
+      const result = processLocalizationLine(line);
+      if (result) {
+        const [key, val] = result;
+        langMap[localizationMap[key]] = val;
+      }
+    });
+
+    await once(rl, 'close');
+  } catch (err) {
+    console.error(err);
+  }
+
+  return langMap;
+};
+
+const processFileContentsByLine = (content) => {
+  const langMap = {};
+
+  let lines = content.split(/\n/g);
+  //Iterate each line and build language index
+  for (let i = 0; i < lines.length; i++) {
+    const result = processLocalizationLine(lines[i]);
+    if (result) {
+      const [key, val] = result;
+      langMap[localizationMap[key]] = val;
+    }
+  }
+
+  return langMap;
+}
+
 module.exports = class DataBuilder {
   constructor(options = {}) {
     this.dataPath = options.dataPath;
     this.gameData = {};
-    this.zipGameData = options.zipGameData || false;
-    this.useSegments = options.useSegments || false;
+    this.zipGameData = (options.zipGameData && options.zipGameData === "true") ? true : false;
+    this.useSegments = (options.useSegments && options.useSegments === "true") ? true : false;
+    this.useUnzip = (options.useUnzip && options.useUnzip === "true") ? true : false;
 
     this.clientStub = new ComlinkStub({
-      url: options.url || 'http://localhost:3000'
+      url: options.url || 'http://localhost:3000',
+      accessKey: options.accessKey || '',
+      secretKey: options.secretKey || ''
     });
 
     this.updateInterval = options.updateInterval || 5; // in minutes
@@ -295,8 +352,8 @@ module.exports = class DataBuilder {
   async updateLocalizationBundle(versionString) {
     try {
       console.log(`Updating localization to version ${versionString}...`);
-      const unzip = true;
-      const localizationBundle = await this.clientStub.getLocalizationBundle(versionString, unzip);
+      const unzip = this.useUnzip;
+      let localizationBundle = await this.clientStub.getLocalizationBundle(versionString, unzip);
       this._version.language = versionString;
       this._version.languages = [];
 
@@ -307,25 +364,28 @@ module.exports = class DataBuilder {
       }
       await this.writeFile('statEnum', statEnums);
 
+      if (!unzip) {
+        const zipped = await (new JSZip())
+          .loadAsync(Buffer.from(localizationBundle.localizationBundle, 'base64'), { base64:true });
+        localizationBundle = Object.entries(zipped.files);
+      } else {
+        localizationBundle = Object.entries(localizationBundle);
+      }
+
       // iterate languages
-      for (const [language, content] of Object.entries(localizationBundle)) {
-        let lang = language.replace(/(Loc_)|(.txt)/gi,'');
-        const langMap = {};
+      for (let [language, content] of localizationBundle) {
+        let langMap;
 
-        let lines = content.split(/\n/g);
-        //Iterate each line and build language index
-        for (let i = 0; i < lines.length; i++) {
-          if (lines[i].startsWith('#')) continue;
-          let [ key, val ] = lines[i].split(/\|/g).map(s => s.trim());
-          if (!key || !val) continue;
-
-          if (localizationMap[key]) {
-            val = val.replace(/^\[[0-9A-F]*?\](.*)\s+\(([A-Z]+)\)\[-\]$/, (m,p1,p2) => p1);
-            langMap[localizationMap[key]] = val;
-          }
+        if (!unzip) {
+          //const content = (await zipped.files[file].async('string')).toString();
+          const fileStream = content.nodeStream();
+          langMap = await processStreamByLine(fileStream);
+        } else {
+          langMap = processFileContentsByLine(content);
         }
 
         if (Object.keys(langMap).length > 0) {
+          const lang = language.replace(/(Loc_)|(.txt)/gi,'');
           const langName = `${lang.toLocaleLowerCase()}`;
           await this.writeFile(langName, langMap);
           this._version.languages.push(langName);
