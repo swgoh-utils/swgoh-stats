@@ -1,3 +1,15 @@
+# [1.1.0](https://gitlab.com/swgoh-tools/swgoh-stats/compare/v1.0.1...v1.1.0) (2022-08-14)
+
+
+### Bug Fixes
+
+* update bundled game data ([41d8d52](https://gitlab.com/swgoh-tools/swgoh-stats/commit/41d8d520383e7512b226ff04806fdc9763131be7))
+
+
+### Features
+
+* add hmac capability, support building game data with unzip=false ([fee47a8](https://gitlab.com/swgoh-tools/swgoh-stats/commit/fee47a8c155d79e353df5285f2326f31f1d699d9))
+
 ## [1.0.1](https://gitlab.com/swgoh-tools/swgoh-stats/compare/v1.0.0...v1.0.1) (2022-06-20)
 
 
