@@ -269,7 +269,11 @@
           level: "<integer>",
           gear: "<integer>",
           equipped: "<String || Array>", // See Below
-          relic: "<integer>"
+          relic: "<integer>",
+          skills: "<String || Array>", // See Below
+          modRarity: "<integer>",
+          modLevel: "<integer>",
+          modTier: "<integer>",
         },
         ship: { // used when calculating ship stats
           rarity: "<integer>",
@@ -283,26 +287,31 @@
           skills: "<String || integer>", // See Below
           modRarity: "<integer>",
           modLevel: "<integer>",
+          modTier: "<integer>",
           relic: "<integer>"
         }
       },{1:[11,"used when calculating character stats"],
-         2:[1," 1-7 (default 7)"],
-         3:[2," 1-90 (default 85)"],
-         4:[3," 1-12 (default 12)"],
-         5:[1," See Below"],
-         6:[2," 1-9 (See Below)"],
-         8:[11,"used when calculating ship stats"],
-         9:[1," 1-7 (default 7)"],
-         10:[3," 1-90 (default 85)"],
-         12:[11,"used for characters when calculating ship stats"],
+         2:[1," 1-7 (default 7)"],   // rarity
+         3:[2," 1-90 (default 85)"], // level
+         4:[3," 1-12 (default 12)"], // gear
+         5:[1," See Below"],         // equipped
+         6:[2," 1-9 (See Below)"],   // relic
+         7:[1," 1-7 (default 6)"],   // modRarity
+         8:[2," 1-15 (default 15)"], // modLevel
+         9:[1," 1-5 (default 5)"],   // modTier
+         12:[11,"used when calculating ship stats"],
          13:[1," 1-7 (default 7)"],
-         14:[2," 1-90 (default 85)"],
-         15:[3," 1-12 (default 12)"],
-         16:[1," See Below"],
-         17:[1," See Below"],
-         18:[1," 1-7 (default 6)"],
-         19:[2," 1-15 (default 15)"],
-         20:[2," 1-9 (See Below)"]
+         14:[3," 1-90 (default 85)"],
+         16:[11,"used for characters when calculating ship stats"],
+         17:[1," 1-7 (default 7)"],
+         18:[2," 1-90 (default 85)"],
+         19:[3," 1-12 (default 12)"],
+         20:[1," See Below"],
+         21:[1," See Below"],
+         22:[1," 1-7 (default 6)"],   // modRarity
+         23:[2," 1-15 (default 15)"], // modLevel
+         24:[1," 1-5 (default 5)"],   // modTier
+         25:[2," 1-9 (See Below)"]
         });
       document.getElementById("playerSample").innerHTML = jsonPrettyPrint.toHtml([
         {

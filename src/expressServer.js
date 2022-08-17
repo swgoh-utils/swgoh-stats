@@ -36,10 +36,11 @@ app.use(helmet());
 
 const MAX_LEVEL = process.env.MAX_LEVEL || 85;
 const MAX_GEAR_LEVEL = process.env.MAX_GEAR_LEVEL || 13;
-const MAX_MOD_PIPS = process.env.MAX_MOD_PIPS || 6;
 const MAX_RARITY = process.env.MAX_RARITY || 7;
 const MAX_RELIC = process.env.MAX_RELIC || 11;
+const MAX_MOD_PIPS = process.env.MAX_MOD_PIPS || 6;
 const MAX_MOD_LEVEL = process.env.MAX_MOD_LEVEL || 15;
+const MAX_MOD_TIER = process.env.MAX_MOD_TIER || 5;
 
 let gameData;
 const MAX_VALUES = {
@@ -48,7 +49,11 @@ const MAX_VALUES = {
     level: MAX_LEVEL,
     gear: MAX_GEAR_LEVEL,
     equipped: "all",
-    relic: MAX_RELIC
+    relic: MAX_RELIC,
+    skills: "max",
+    modRarity: MAX_MOD_PIPS,
+    modLevel: MAX_MOD_LEVEL,
+    modTier: MAX_MOD_TIER
   },
   ship: {
     rarity: MAX_RARITY,
@@ -63,6 +68,7 @@ const MAX_VALUES = {
     skills: "max",
     modRarity: MAX_MOD_PIPS,
     modLevel: MAX_MOD_LEVEL,
+    modTier: MAX_MOD_TIER,
     relic: MAX_RELIC
   }
 };
@@ -115,7 +121,11 @@ router.use(['/api','/api/characters','/api/characters/:baseID','/api/ships','/ap
           rarity: obj.rarity,
           level: obj.level,
           gear: obj.gear,
-          equipped: obj.equipped
+          equipped: obj.equipped,
+          skills: obj.skills,
+          modRarity: obj.modRarity,
+          modLevel: obj.modLevel,
+          modTier: obj.modTier
         },
         ship: {
           rarity: obj.rarity,
@@ -129,7 +139,8 @@ router.use(['/api','/api/characters','/api/characters/:baseID','/api/ships','/ap
           equipped: obj.equipped,
           skills: obj.skills,
           modRarity: obj.modRarity,
-          modLevel: obj.modLevel
+          modLevel: obj.modLevel,
+          modTier: obj.modTier
         }
       };
     }
