@@ -11,6 +11,7 @@ const statEnumMap = require('./statEnumMap.json');
 const statEnum = {};
 const localizationMap = {};
 const ZIP_FILE = path.join(__dirname, `statCalcData.zip`);
+const INCLUDE_PVE_UNITS = false;
 
 for (const [key, value] of Object.entries(statEnumMap)) {
   if (value.tableKey) {
@@ -36,10 +37,7 @@ const processStreamByLine = async (fileStream) => {
   const langMap = {};
 
   try {
-    const rl = createInterface({
-      input: fileStream,
-      //crlfDelay: Infinity
-    });
+    const rl = createInterface({ input: fileStream });
 
     rl.on('line', (line) => {
       const result = processLocalizationLine(line);
@@ -321,7 +319,7 @@ module.exports = class DataBuilder {
           const [key, val] = segments[i];
 
           if (!val) continue;
-          const data = await this.clientStub.getGameData(versionString, true, val);
+          const data = await this.clientStub.getGameData(versionString, INCLUDE_PVE_UNITS, val);
 
           for (const collection of collections) {
             if (!gameData[collection] && data[collection] && data[collection].length > 0) {
@@ -337,7 +335,7 @@ module.exports = class DataBuilder {
         }
       } else {
         console.log(`Fetching game data without using segments parameter`);
-        gameData = await this.clientStub.getGameData(versionString);
+        gameData = await this.clientStub.getGameData(versionString, INCLUDE_PVE_UNITS);
       }
 
       this._version.game = versionString;
@@ -377,7 +375,6 @@ module.exports = class DataBuilder {
         let langMap;
 
         if (!unzip) {
-          //const content = (await zipped.files[file].async('string')).toString();
           const fileStream = content.nodeStream();
           langMap = await processStreamByLine(fileStream);
         } else {
