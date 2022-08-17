@@ -15,7 +15,7 @@
     "helmet": "^5.1.1",
     "jszip": "^3.10.1",
     "mkdirp": "^1.0.4",
-    "swgoh-stat-calc": "github:munelear/swgoh-stat-calc#023d0f07"
+    "swgoh-stat-calc": "github:munelear/swgoh-stat-calc#9b2ed1d"
   },
   "engines": {
     "node": ">=16"
