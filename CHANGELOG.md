@@ -1,3 +1,10 @@
+## [1.1.1](https://gitlab.com/swgoh-tools/swgoh-stats/compare/v1.1.0...v1.1.1) (2022-08-17)
+
+
+### Bug Fixes
+
+* includePveUnits = false, use abs path with VOLUME ([d2f9b35](https://gitlab.com/swgoh-tools/swgoh-stats/commit/d2f9b356e0e31a99863893b6fa1fd0dc20a8902e))
+
 # [1.1.0](https://gitlab.com/swgoh-tools/swgoh-stats/compare/v1.0.1...v1.1.0) (2022-08-14)
 
 
