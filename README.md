@@ -40,7 +40,7 @@ CLIENT_URL=http://swgoh-comlink:3000
 This script assumes that you set up a docker network ahead of time for swgoh-stats and swgoh-comlink to communicate on, with a command like `docker network create swgoh-comlink`.  If you do not create a network for the containers to talk to each other, you will likely need to use the public IP of your docker host (the IP reported for eth0 in `ifconfig`) and ensure that any OS level firewall like `ufw` will permit the traffic.
 
 ```sh
-docker pull registry.gitlab.com/swgoh-tools/swgoh-stats:latest
+docker pull ghcr.io/swgoh-utils/swgoh-stats:latest
 docker stop swgoh-stats
 docker rm swgoh-stats
 docker run --name=swgoh-stats \
@@ -51,5 +51,5 @@ docker run --name=swgoh-stats \
   -p 3223:3223 \
   -u $(id -u):$(id -g) \
   -v $(pwd)/statCalcData:/app/statCalcData \
-  registry.gitlab.com/swgoh-tools/swgoh-stats:latest
+  ghcr.io/swgoh-utils/swgoh-stats:latest
 ```

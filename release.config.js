@@ -25,7 +25,7 @@ module.exports = {
         "publishCmd": "./publishRelease.sh ${nextRelease.version}",
       }
     ],
-    "@semantic-release/gitlab",
+    "@semantic-release/github",
     "@semantic-release/git",
   ],
 };
