@@ -1,3 +1,14 @@
+## [1.1.2](https://gitlab.com/swgoh-tools/swgoh-stats/compare/v1.1.1...v1.1.2) (2023-01-10)
+
+
+### Bug Fixes
+
+* adopt renamed comlink stub package, update bundled data ([f8e8b4f](https://gitlab.com/swgoh-tools/swgoh-stats/commit/f8e8b4f60a21a446cf10945870bfd2f9ee32a7b0))
+* adopt scuba's fixes for character and ship cals ([ce19441](https://gitlab.com/swgoh-tools/swgoh-stats/commit/ce194410cb62ebeb4461c726b28ae6f04ffc2886))
+* extend calcGP to single unit/ship APIs ([adc47d1](https://gitlab.com/swgoh-tools/swgoh-stats/commit/adc47d11d347fa4c546e903c92e3297e7f722fa4))
+* remove reference to body parser, use express directly ([40325d9](https://gitlab.com/swgoh-tools/swgoh-stats/commit/40325d97874927ede29bd6fa35b85c7fabe2a041))
+* ship calcs and roster /units style ([b836d7e](https://gitlab.com/swgoh-tools/swgoh-stats/commit/b836d7ece554b19612d2874f017ed2f4a72b2978))
+
 ## [1.1.1](https://gitlab.com/swgoh-tools/swgoh-stats/compare/v1.1.0...v1.1.1) (2022-08-17)
 
 
