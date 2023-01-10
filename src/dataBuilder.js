@@ -1,4 +1,4 @@
-const ComlinkStub = require('@swgoh-tools/comlink');
+const ComlinkStub = require('@swgoh-utils/comlink');
 const mkdirp = require('mkdirp');
 const fs = require('fs');
 const path = require('path');
