@@ -1,7 +1,6 @@
 const express = require('express');
 // init express Router
 const router = express.Router();
-const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
 const DataBuilder = require('./dataBuilder');
@@ -182,7 +181,7 @@ const rosterType = {
 // parse out POST body, determine roster type, and define stat options
 //   -req.rosterType = rosterType enum for the POST body
 //   -req.options = options object for statCalculator
-router.post(['/api','/api/characters','/api/ships'], bodyParser.json({limit:'100mb'}), async (req, res, next) => {
+router.post(['/api','/api/characters','/api/ships'], express.json({limit:'100mb'}), async (req, res, next) => {
   if (req.body.constructor === Array) {
     const body = req.body[0];
     if (body.roster || body.rosterUnit) { // first object in array is a player profile
