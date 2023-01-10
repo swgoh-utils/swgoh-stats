@@ -8,14 +8,13 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@swgoh-tools/comlink": "^1.1.0",
-    "body-parser": "^1.20.0",
+    "@swgoh-utils/comlink": "^1.2.4",
     "compression": "^1.7.4",
     "express": "^4.18.1",
     "helmet": "^5.1.1",
     "jszip": "^3.10.1",
     "mkdirp": "^1.0.4",
-    "swgoh-stat-calc": "github:munelear/swgoh-stat-calc#5aa9cdb"
+    "swgoh-stat-calc": "github:munelear/swgoh-stat-calc#6ceeb3b"
   },
   "engines": {
     "node": ">=16"
