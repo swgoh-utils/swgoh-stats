@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/swgoh-utils/swgoh-stats/compare/v1.2.0...v1.3.0) (2023-02-01)
+
+
+### Features
+
+* show swgoh-stats version in startup log ([5f28cfa](https://github.com/swgoh-utils/swgoh-stats/commit/5f28cfa95fa3f6adca19682d21a25c706a990bdb))
+
 # [1.2.0](https://github.com/swgoh-utils/swgoh-stats/compare/v1.1.2...v1.2.0) (2023-02-01)
 
 
