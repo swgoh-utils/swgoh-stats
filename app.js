@@ -2,6 +2,8 @@ const port = process.env.PORT || 3223;
 const expressServer = require('./src/expressServer');
 let updateListenerRegistered = false;
 
+const { version } = require('./package.json');
+
 const init = async () => {
   try {
     await expressServer.initCalc();
@@ -18,7 +20,7 @@ const init = async () => {
 
   // listen for requests :)
   const listener = expressServer.listen(port, () => {
-    console.log(`swgoh-stats is listening on port ${listener.address().port} for swgoh stat requests.`);
+    console.log(`swgoh-stats:${version} is listening on port ${listener.address().port} for swgoh stat requests.`);
   });
 
   if (!updateListenerRegistered) {
