@@ -4,5 +4,7 @@
 
 echo "Publishing: $CI_REGISTRY_IMAGE:$1..."
 
-docker push $CI_REGISTRY_IMAGE:$1
-docker push $CI_REGISTRY_IMAGE:latest
+docker buildx build --platform linux/amd64,linux/arm64 \
+  -t $CI_REGISTRY_IMAGE:$1 \
+  -t $CI_REGISTRY_IMAGE:latest \
+  --push .
