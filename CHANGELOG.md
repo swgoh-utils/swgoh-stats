@@ -1,3 +1,17 @@
+# [1.2.0](https://github.com/swgoh-utils/swgoh-stats/compare/v1.1.2...v1.2.0) (2023-02-01)
+
+
+### Bug Fixes
+
+* correct release permissions ([4d6515c](https://github.com/swgoh-utils/swgoh-stats/commit/4d6515cc204dd9f126413861fef8845b62585413))
+
+
+### Features
+
+* create github action workflows ([9a93b1b](https://github.com/swgoh-utils/swgoh-stats/commit/9a93b1bf425575d2800f51f71edc8626ba7b6f5c))
+* update dependencies ([4b51e1a](https://github.com/swgoh-utils/swgoh-stats/commit/4b51e1a49b37cd95e8248f12101d033a7f355fbe))
+* update game data ([be25285](https://github.com/swgoh-utils/swgoh-stats/commit/be25285c0b1576a46895090cdb1a41c894d4b42c))
+
 ## [1.1.2](https://github.com/swgoh-utils/swgoh-stats/compare/v1.1.1...v1.1.2) (2023-01-10)
 
 
