@@ -1,5 +1,5 @@
 module.exports = {
-  branches: ['master'],
+  branches: ['main'],
   debug: 'semantic-release:*',
   plugins: [
     [
@@ -20,7 +20,6 @@ module.exports = {
     [
       '@semantic-release/exec',
       {
-        "verifyConditionsCmd": 'docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY',
         "prepareCmd": "./prepareRelease.sh ${nextRelease.version}",
         "publishCmd": "./publishRelease.sh ${nextRelease.version}",
       }

@@ -2,7 +2,9 @@
 
 [ $# -eq 0 ] && { echo "Usage: $0 release_version"; exit 1; }
 
+# BUILDING DOCKER IMAGES
 echo "Building docker image: $CI_REGISTRY_IMAGE:$1..."
-docker build --pull -t $CI_REGISTRY_IMAGE:$1 .
-# tag latest for local repository
-docker tag $CI_REGISTRY_IMAGE:$1 $CI_REGISTRY_IMAGE:latest
+docker buildx build --platform linux/amd64,linux/arm64 \
+  -t $CI_REGISTRY_IMAGE:$1 \
+  -t $CI_REGISTRY_IMAGE:latest \
+  .
