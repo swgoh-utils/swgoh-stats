@@ -2,6 +2,8 @@
 
 A microservice version of Crinolo's stat calc which works directly with the swgoh-comlink service, and accepts data in the raw format in addition to .help's format.
 
+For further help using this tool see the [wiki](https://github.com/swgoh-utils/swgoh-stats/wiki) or you can access help documentation from a web browser at [http://localhost:3223/](http://localhost:3223/) where 3223 is the port number you have it set to.
+
 # Environment Variables
 
 - PORT - the port that the service will listen to
@@ -35,7 +37,7 @@ PORT=3223
 CLIENT_URL=http://swgoh-comlink:3000
 ```
 
-# example script for updating from gitlab docker repository
+# example script for updating from github docker repository
 
 This script assumes that you set up a docker network ahead of time for swgoh-stats and swgoh-comlink to communicate on, with a command like `docker network create swgoh-comlink`.  If you do not create a network for the containers to talk to each other, you will likely need to use the public IP of your docker host (the IP reported for eth0 in `ifconfig`) and ensure that any OS level firewall like `ufw` will permit the traffic.
 
