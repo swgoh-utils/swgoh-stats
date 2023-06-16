@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/swgoh-utils/swgoh-stats/compare/v1.3.0...v1.3.1) (2023-06-16)
+
+
+### Bug Fixes
+
+* ult GP calc and data builder unit error ([#4](https://github.com/swgoh-utils/swgoh-stats/issues/4)) ([efd0cc2](https://github.com/swgoh-utils/swgoh-stats/commit/efd0cc247af363b85f29e80910d9bc478905f183))
+
 # [1.3.0](https://github.com/swgoh-utils/swgoh-stats/compare/v1.2.0...v1.3.0) (2023-02-01)
 
 
