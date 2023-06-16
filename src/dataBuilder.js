@@ -734,7 +734,7 @@ function buildUnitData(unitsList, skillList, statTables) {
   const unitGMTables = {};
 
   let i = unitsList.length;
-  while (--i) {
+  while (i--) {
     const unit = unitsList[i];
 
     if (unit.obtainable && unit.obtainableTime === '0') {
