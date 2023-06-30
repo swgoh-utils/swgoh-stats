@@ -1,3 +1,10 @@
+## [1.3.2](https://github.com/swgoh-utils/swgoh-stats/compare/v1.3.1...v1.3.2) (2023-06-30)
+
+
+### Bug Fixes
+
+* force update of stat calc lib dep, update deps, update zipped data ([#5](https://github.com/swgoh-utils/swgoh-stats/issues/5)) ([57a02c9](https://github.com/swgoh-utils/swgoh-stats/commit/57a02c927ceb40c15e51aa43b20affee37fc6f75))
+
 ## [1.3.1](https://github.com/swgoh-utils/swgoh-stats/compare/v1.3.0...v1.3.1) (2023-06-16)
 
 
