@@ -10,13 +10,13 @@
     "@swgoh-utils/comlink": "^1.4.1",
     "compression": "^1.7.4",
     "express": "^4.18.2",
-    "helmet": "^7.0.0",
+    "helmet": "^7.1.0",
     "jszip": "^3.10.1",
     "mkdirp": "^1.0.4",
     "swgoh-stat-calc": "github:munelear/swgoh-stat-calc#895816e"
   },
   "engines": {
-    "node": ">=16"
+    "node": ">=20"
   },
   "repository": {
     "url": "https://github.com/swgoh-utils/swgoh-stats"
