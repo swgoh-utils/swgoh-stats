@@ -250,7 +250,7 @@ module.exports = class DataBuilder {
 
         self._handleVersionNotification(version, newVersion, callback);
       } catch(error) {
-        self.logger.error(`Unable to fetch metadata: ${error.message}`);
+        console.error(`Unable to fetch metadata: ${error.message}`);
       }
     }, self.updateInterval * 60 * 1000);
     //                 min  sec   msec
