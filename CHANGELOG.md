@@ -1,3 +1,10 @@
+## [1.3.3](https://github.com/swgoh-utils/swgoh-stats/compare/v1.3.2...v1.3.3) (2023-12-11)
+
+
+### Bug Fixes
+
+* alpine node-lts (20) base image, data builder fix, dep updates ([#6](https://github.com/swgoh-utils/swgoh-stats/issues/6)) ([9e95d35](https://github.com/swgoh-utils/swgoh-stats/commit/9e95d35585fe4cd248d98711f3dc699cb5d8c1ad))
+
 ## [1.3.2](https://github.com/swgoh-utils/swgoh-stats/compare/v1.3.1...v1.3.2) (2023-06-30)
 
 
