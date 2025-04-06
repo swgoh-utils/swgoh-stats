@@ -13,7 +13,7 @@
     "helmet": "^7.1.0",
     "jszip": "^3.10.1",
     "mkdirp": "^1.0.4",
-    "swgoh-stat-calc": "github:munelear/swgoh-stat-calc#895816e"
+    "swgoh-stat-calc": "github:swgoh-utils/swgoh-stat-calc#895816e"
   },
   "engines": {
     "node": ">=20"
