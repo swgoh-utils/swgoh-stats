@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/swgoh-utils/swgoh-stats/compare/v1.3.3...v1.4.0) (2025-04-06)
+
+
+### Features
+
+* update bundled data, point at new repo, snake_case enums ([#8](https://github.com/swgoh-utils/swgoh-stats/issues/8)) ([fbae0fd](https://github.com/swgoh-utils/swgoh-stats/commit/fbae0fd55ef8c619eedd1eb92cdf23204d7f9fb0))
+
 ## [1.3.3](https://github.com/swgoh-utils/swgoh-stats/compare/v1.3.2...v1.3.3) (2023-12-11)
 
 
