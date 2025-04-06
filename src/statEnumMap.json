@@ -4,307 +4,307 @@
     "nameKey":"None"
   },
   "1":{
-    "enum":"UNITSTATMAXHEALTH",
+    "enum":"UNIT_STAT_MAX_HEALTH",
     "nameKey":"UnitStat_Health",
     "tableKey":"MAX_HEALTH"
   },
   "2":{
-    "enum":"UNITSTATSTRENGTH",
+    "enum":"UNIT_STAT_STRENGTH",
     "nameKey":"UnitStat_Strength",
     "tableKey":"STRENGTH"
   },
   "3":{
-    "enum":"UNITSTATAGILITY",
+    "enum":"UNIT_STAT_AGILITY",
     "nameKey":"UnitStat_Agility",
     "tableKey":"AGILITY"
   },
   "4":{
-    "enum":"UNITSTATINTELLIGENCE",
+    "enum":"UNIT_STAT_INTELLIGENCE",
     "nameKey":"UnitStat_Intelligence",
     "tableKey":"INTELLIGENCE"
   },
   "5":{
-    "enum":"UNITSTATSPEED",
+    "enum":"UNIT_STAT_SPEED",
     "nameKey":"UnitStat_Speed",
     "tableKey":"SPEED"
   },
   "6":{
-    "enum":"UNITSTATATTACKDAMAGE",
+    "enum":"UNIT_STAT_ATTACK_DAMAGE",
     "nameKey":"UnitStat_AttackDamage",
     "tableKey":"ATTACK_DAMAGE"
   },
   "7":{
-    "enum":"UNITSTATABILITYPOWER",
+    "enum":"UNIT_STAT_ABILITY_POWER",
     "nameKey":"UnitStat_AbilityPower",
     "tableKey":"ABILITY_POWER"
   },
   "8":{
-    "enum":"UNITSTATARMOR",
+    "enum":"UNIT_STAT_ARMOR",
     "nameKey":"UnitStat_Armor",
     "tableKey":"ARMOR"
   },
   "9":{
-    "enum":"UNITSTATSUPPRESSION",
+    "enum":"UNIT_STAT_SUPPRESSION",
     "nameKey":"UnitStat_Suppression",
     "tableKey":"SUPPRESSION"
   },
   "10":{
-    "enum":"UNITSTATARMORPENETRATION",
+    "enum":"UNIT_STAT_ARMOR_PENETRATION",
     "nameKey":"UnitStat_ArmorPenetration",
     "tableKey":"ARMOR_PENETRATION"
   },
   "11":{
-    "enum":"UNITSTATSUPPRESSIONPENETRATION",
+    "enum":"UNIT_STAT_SUPPRESSION_PENETRATION",
     "nameKey":"UnitStat_SuppressionPenetration",
     "tableKey":"SUPPRESSION_PENETRATION"
   },
   "12":{
-    "enum":"UNITSTATDODGERATING",
+    "enum":"UNIT_STAT_DODGE_RATING",
     "nameKey":"UnitStat_DodgeRating_TU5V",
     "tableKey":"DODGE_RATING"
   },
   "13":{
-    "enum":"UNITSTATDEFLECTIONRATING",
+    "enum":"UNIT_STAT_DEFLECTION_RATING",
     "nameKey":"UnitStat_DeflectionRating_TU5V",
     "tableKey":"DEFLECTION_RATING"
   },
   "14":{
-    "enum":"UNITSTATATTACKCRITICALRATING",
+    "enum":"UNIT_STAT_ATTACK_CRITICAL_RATING",
     "nameKey":"UnitStat_AttackCriticalRating_TU5V",
     "tableKey":"ATTACK_CRITICAL_RATING"
   },
   "15":{
-    "enum":"UNITSTATABILITYCRITICALRATING",
+    "enum":"UNIT_STAT_ABILITY_CRITICAL_RATING",
     "nameKey":"UnitStat_AbilityCriticalRating_TU5V",
     "tableKey":"ABILITY_CRITICAL_RATING"
   },
   "16":{
-    "enum":"UNITSTATCRITICALDAMAGE",
+    "enum":"UNIT_STAT_CRITICAL_DAMAGE",
     "nameKey":"UnitStat_CriticalDamage",
     "tableKey":"CRITICAL_DAMAGE"
   },
   "17":{
-    "enum":"UNITSTATACCURACY",
+    "enum":"UNIT_STAT_ACCURACY",
     "nameKey":"UnitStat_Accuracy",
     "tableKey":"ACCURACY"
   },
   "18":{
-    "enum":"UNITSTATRESISTANCE",
+    "enum":"UNIT_STAT_RESISTANCE",
     "nameKey":"UnitStat_Resistance",
     "tableKey":"RESISTANCE"
   },
   "19":{
-    "enum":"UNITSTATDODGEPERCENTADDITIVE",
+    "enum":"UNIT_STAT_DODGE_PERCENT_ADDITIVE",
     "nameKey":"UnitStat_DodgePercentAdditive",
     "tableKey":"DODGE_PERCENT_ADDITIVE"
   },
   "20":{
-    "enum":"UNITSTATDEFLECTIONPERCENTADDITIVE",
+    "enum":"UNIT_STAT_DEFLECTION_PERCENT_ADDITIVE",
     "nameKey":"UnitStat_DeflectionPercentAdditive",
     "tableKey":"DEFLECTION_PERCENT_ADDITIVE"
   },
   "21":{
-    "enum":"UNITSTATATTACKCRITICALPERCENTADDITIVE",
+    "enum":"UNIT_STAT_ATTACK_CRITICAL_PERCENT_ADDITIVE",
     "nameKey":"UnitStat_AttackCriticalPercentAdditive",
     "tableKey":"ATTACK_CRITICAL_PERCENT_ADDITIVE"
   },
   "22":{
-    "enum":"UNITSTATABILITYCRITICALPERCENTADDITIVE",
+    "enum":"UNIT_STAT_ABILITY_CRITICAL_PERCENT_ADDITIVE",
     "nameKey":"UnitStat_AbilityCriticalPercentAdditive",
     "tableKey":"ABILITY_CRITICAL_PERCENT_ADDITIVE"
   },
   "23":{
-    "enum":"UNITSTATARMORPERCENTADDITIVE",
+    "enum":"UNIT_STAT_ARMOR_PERCENT_ADDITIVE",
     "nameKey":"UnitStat_ArmorPercentAdditive",
     "tableKey":"ARMOR_PERCENT_ADDITIVE"
   },
   "24":{
-    "enum":"UNITSTATSUPPRESSIONPERCENTADDITIVE",
+    "enum":"UNIT_STAT_SUPPRESSION_PERCENT_ADDITIVE",
     "nameKey":"UnitStat_SuppressionPercentAdditive",
     "tableKey":"SUPPRESSION_PERCENT_ADDITIVE"
   },
   "25":{
-    "enum":"UNITSTATARMORPENETRATIONPERCENTADDITIVE",
+    "enum":"UNIT_STAT_ARMOR_PENETRATION_PERCENT_ADDITIVE",
     "nameKey":"UnitStat_ArmorPenetrationPercentAdditive",
     "tableKey":"ARMOR_PENETRATION_PERCENT_ADDITIVE"
   },
   "26":{
-    "enum":"UNITSTATSUPPRESSIONPENETRATIONPERCENTADDITIVE",
+    "enum":"UNIT_STAT_SUPPRESSION_PENETRATION_PERCENT_ADDITIVE",
     "nameKey":"UnitStat_SuppressionPenetrationPercentAdditive",
     "tableKey":"SUPPRESSION_PENETRATION_PERCENT_ADDITIVE"
   },
   "27":{
-    "enum":"UNITSTATHEALTHSTEAL",
+    "enum":"UNIT_STAT_HEALTH_STEAL",
     "nameKey":"UnitStat_HealthSteal",
     "tableKey":"HEALTH_STEAL"
   },
   "28":{
-    "enum":"UNITSTATMAXSHIELD",
+    "enum":"UNIT_STAT_MAX_SHIELD",
     "nameKey":"UnitStat_MaxShield",
     "tableKey":"MAX_SHIELD"
   },
   "29":{
-    "enum":"UNITSTATSHIELDPENETRATION",
+    "enum":"UNIT_STAT_SHIELD_PENETRATION",
     "nameKey":"UnitStat_ShieldPenetration",
     "tableKey":"SHIELD_PENETRATION"
   },
   "30":{
-    "enum":"UNITSTATHEALTHREGEN",
+    "enum":"UNIT_STAT_HEALTH_REGEN",
     "nameKey":"UnitStat_HealthRegen",
     "tableKey":"HEALTH_REGEN"
   },
   "31":{
-    "enum":"UNITSTATATTACKDAMAGEPERCENTADDITIVE",
+    "enum":"UNIT_STAT_ATTACK_DAMAGE_PERCENT_ADDITIVE",
     "nameKey":"UnitStat_AttackDamagePercentAdditive",
     "tableKey":"ATTACK_DAMAGE_PERCENT_ADDITIVE"
   },
   "32":{
-    "enum":"UNITSTATABILITYPOWERPERCENTADDITIVE",
+    "enum":"UNIT_STAT_ABILITY_POWER_PERCENT_ADDITIVE",
     "nameKey":"UnitStat_AbilityPowerPercentAdditive",
     "tableKey":"ABILITY_POWER_PERCENT_ADDITIVE"
   },
   "33":{
-    "enum":"UNITSTATDODGENEGATEPERCENTADDITIVE",
+    "enum":"UNIT_STAT_DODGE_NEGATE_PERCENT_ADDITIVE",
     "nameKey":"UnitStat_DodgeNegatePercentAdditive",
     "tableKey":"DODGE_NEGATE_PERCENT_ADDITIVE"
   },
   "34":{
-    "enum":"UNITSTATDEFLECTIONNEGATEPERCENTADDITIVE",
+    "enum":"UNIT_STAT_DEFLECTION_NEGATE_PERCENT_ADDITIVE",
     "nameKey":"UnitStat_DeflectionNegatePercentAdditive",
     "tableKey":"DEFLECTION_NEGATE_PERCENT_ADDITIVE"
   },
   "35":{
-    "enum":"UNITSTATATTACKCRITICALNEGATEPERCENTADDITIVE",
+    "enum":"UNIT_STAT_ATTACK_CRITICAL_NEGATE_PERCENT_ADDITIVE",
     "nameKey":"UnitStat_AttackCriticalNegatePercentAdditive",
     "tableKey":"ATTACK_CRITICAL_NEGATE_PERCENT_ADDITIVE"
   },
   "36":{
-    "enum":"UNITSTATABILITYCRITICALNEGATEPERCENTADDITIVE",
+    "enum":"UNIT_STAT_ABILITY_CRITICAL_NEGATE_PERCENT_ADDITIVE",
     "nameKey":"UnitStat_AbilityCriticalNegatePercentAdditive",
     "tableKey":"ABILITY_CRITICAL_NEGATE_PERCENT_ADDITIVE"
   },
   "37":{
-    "enum":"UNITSTATDODGENEGATERATING",
+    "enum":"UNIT_STAT_DODGE_NEGATE_RATING",
     "nameKey":"UnitStat_DodgeNegateRating",
     "tableKey":"DODGE_NEGATE_RATING"
   },
   "38":{
-    "enum":"UNITSTATDEFLECTIONNEGATERATING",
+    "enum":"UNIT_STAT_DEFLECTION_NEGATE_RATING",
     "nameKey":"UnitStat_DeflectionNegateRating",
     "tableKey":"DEFLECTION_NEGATE_RATING"
   },
   "39":{
-    "enum":"UNITSTATATTACKCRITICALNEGATERATING",
+    "enum":"UNIT_STAT_ATTACK_CRITICAL_NEGATE_RATING",
     "nameKey":"UnitStat_AttackCriticalNegateRating",
     "tableKey":"ATTACK_CRITICAL_NEGATE_RATING"
   },
   "40":{
-    "enum":"UNITSTATABILITYCRITICALNEGATERATING",
+    "enum":"UNIT_STAT_ABILITY_CRITICAL_NEGATE_RATING",
     "nameKey":"UnitStat_AbilityCriticalNegateRating",
     "tableKey":"ABILITY_CRITICAL_NEGATE_RATING"
   },
   "41":{
-    "enum":"UNITSTATOFFENSE",
+    "enum":"UNIT_STAT_OFFENSE",
     "nameKey":"UnitStat_Offense",
     "tableKey":"OFFENSE"
   },
   "42":{
-    "enum":"UNITSTATDEFENSE",
+    "enum":"UNIT_STAT_DEFENSE",
     "nameKey":"UnitStat_Defense",
     "tableKey":"DEFENSE"
   },
   "43":{
-    "enum":"UNITSTATDEFENSEPENETRATION",
+    "enum":"UNIT_STAT_DEFENSE_PENETRATION",
     "nameKey":"UnitStat_DefensePenetration",
     "tableKey":"DEFENSE_PENETRATION"
   },
   "44":{
-    "enum":"UNITSTATEVASIONRATING",
+    "enum":"UNIT_STAT_EVASION_RATING",
     "nameKey":"UnitStat_EvasionRating",
     "tableKey":"EVASION_RATING"
   },
   "45":{
-    "enum":"UNITSTATCRITICALRATING",
+    "enum":"UNIT_STAT_CRITICAL_RATING",
     "nameKey":"UnitStat_CriticalRating",
     "tableKey":"CRITICAL_RATING"
   },
   "46":{
-    "enum":"UNITSTATEVASIONNEGATERATING",
+    "enum":"UNIT_STAT_EVASION_NEGATE_RATING",
     "nameKey":"UnitStat_EvasionNegateRating",
     "tableKey":"EVASION_NEGATE_RATING"
   },
   "47":{
-    "enum":"UNITSTATCRITICALNEGATERATING",
+    "enum":"UNIT_STAT_CRITICAL_NEGATE_RATING",
     "nameKey":"UnitStat_CriticalNegateRating",
     "tableKey":"CRITICAL_NEGATE_RATING"
   },
   "48":{
-    "enum":"UNITSTATOFFENSEPERCENTADDITIVE",
+    "enum":"UNIT_STAT_OFFENSE_PERCENT_ADDITIVE",
     "nameKey":"UnitStat_OffensePercentAdditive",
     "tableKey":"OFFENSE_PERCENT_ADDITIVE"
   },
   "49":{
-    "enum":"UNITSTATDEFENSEPERCENTADDITIVE",
+    "enum":"UNIT_STAT_DEFENSE_PERCENT_ADDITIVE",
     "nameKey":"UnitStat_DefensePercentAdditive",
     "tableKey":"DEFENSE_PERCENT_ADDITIVE"
   },
   "50":{
-    "enum":"UNITSTATDEFENSEPENETRATIONPERCENTADDITIVE",
+    "enum":"UNIT_STAT_DEFENSE_PENETRATION_PERCENT_ADDITIVE",
     "nameKey":"UnitStat_DefensePenetrationPercentAdditive",
     "tableKey":"DEFENSE_PENETRATION_PERCENT_ADDITIVE"
   },
   "51":{
-    "enum":"UNITSTATEVASIONPERCENTADDITIVE",
+    "enum":"UNIT_STAT_EVASION_PERCENT_ADDITIVE",
     "nameKey":"UnitStat_EvasionPercentAdditive",
     "tableKey":"EVASION_PERCENT_ADDITIVE"
   },
   "52":{
-    "enum":"UNITSTATEVASIONNEGATEPERCENTADDITIVE",
+    "enum":"UNIT_STAT_EVASION_NEGATE_PERCENT_ADDITIVE",
     "nameKey":"UnitStat_EvasionNegatePercentAdditive",
     "tableKey":"EVASION_NEGATE_PERCENT_ADDITIVE"
   },
   "53":{
-    "enum":"UNITSTATCRITICALCHANCEPERCENTADDITIVE",
+    "enum":"UNIT_STAT_CRITICAL_CHANCE_PERCENT_ADDITIVE",
     "nameKey":"UnitStat_CriticalChancePercentAdditive",
     "tableKey":"CRITICAL_CHANCE_PERCENT_ADDITIVE"
   },
   "54":{
-    "enum":"UNITSTATCRITICALNEGATECHANCEPERCENTADDITIVE",
+    "enum":"UNIT_STAT_CRITICAL_NEGATE_CHANCE_PERCENT_ADDITIVE",
     "nameKey":"UnitStat_CriticalNegateChancePercentAdditive",
     "tableKey":"CRITICAL_NEGATE_CHANCE_PERCENT_ADDITIVE"
   },
   "55":{
-    "enum":"UNITSTATMAXHEALTHPERCENTADDITIVE",
+    "enum":"UNIT_STAT_MAX_HEALTH_PERCENT_ADDITIVE",
     "nameKey":"UnitStat_MaxHealthPercentAdditive",
     "tableKey":"MAX_HEALTH_PERCENT_ADDITIVE"
   },
   "56":{
-    "enum":"UNITSTATMAXSHIELDPERCENTADDITIVE",
+    "enum":"UNIT_STAT_MAX_SHIELD_PERCENT_ADDITIVE",
     "nameKey":"UnitStat_MaxShieldPercentAdditive",
     "tableKey":"MAX_SHIELD_PERCENT_ADDITIVE"
   },
   "57":{
-    "enum":"UNITSTATSPEEDPERCENTADDITIVE",
+    "enum":"UNIT_STAT_SPEED_PERCENT_ADDITIVE",
     "nameKey":"UnitStat_SpeedPercentAdditive",
     "tableKey":"SPEED_PERCENT_ADDITIVE"
   },
   "58":{
-    "enum":"UNITSTATCOUNTERATTACKRATING",
+    "enum":"UNIT_STAT_COUNTER_ATTACK_RATING",
     "nameKey":"UnitStat_CounterAttackRating",
     "tableKey":"COUNTER_ATTACK_RATING"
   },
   "59":{
-    "enum":"UNITSTATTAUNT",
+    "enum":"UNIT_STAT_TAUNT",
     "nameKey":"UnitStat_Taunt",
     "tableKey":"TAUNT"
   },
   "60":{
-    "enum":"UNITSTATDEFENSEPENETRATIONTARGETPERCENTADDITIVE",
+    "enum":"UNIT_STAT_DEFENSE_PENETRATION_TARGET_PERCENT_ADDITIVE",
     "nameKey":"UnitStat_DefensePenetrationTargetPercentAdditive",
     "tableKey":"DEFENSE_PENETRATION_TARGET_PERCENT_ADDITIVE"
   },
   "61":{
-    "enum":"UNITSTATMASTERY",
+    "enum":"UNIT_STAT_MASTERY",
     "nameKey":"UNIT_STAT_STAT_VIEW_MASTERY",
     "tableKey":"MASTERY"
   }
