@@ -438,18 +438,7 @@ router.use( (err, req, res, next) => {
 });
 
 app.use('/', router);
-
-module.exports = app;
-module.exports.initCalc = async () => {
-  try {
-    gameData = await dataBuilder.init();
-    statCalculator.setGameData(gameData);
-  } catch(error) {
-    throw(error);
-  }
-};
-
-module.exports.listenForUpdates = async () => {
+const listenForUpdates = async () => {
   try {
     gameData = await dataBuilder.listenForUpdates((error, newGameData) => {
       if (error) {
@@ -461,6 +450,22 @@ module.exports.listenForUpdates = async () => {
     });
     statCalculator.setGameData(gameData);
   } catch(error) {
+    if(error?.name){
+      console.error(`${error?.name}: ${error?.message}`);
+    }else{
+      console.error(error)
+    }
+    setTimeout(listenForUpdates, 5000);
+  }
+};
+module.exports = app;
+module.exports.initCalc = async () => {
+  try {
+    gameData = await dataBuilder.init();
+    statCalculator.setGameData(gameData);
+  } catch(error) {
     throw(error);
   }
 };
+
+module.exports.listenForUpdates = listenForUpdates
