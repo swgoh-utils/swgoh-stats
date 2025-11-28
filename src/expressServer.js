@@ -3,20 +3,33 @@ const express = require('express');
 const router = express.Router();
 const fs = require('fs');
 const path = require('path');
-const DataBuilder = require('./dataBuilder');
-
+let DataBuilder, dataBuilder
 const dataPath = process.env.DATA_PATH || 'statCalcData';
 
-const dataBuilder = new DataBuilder({
-  dataPath: dataPath,
-  updateInterval: process.env.UPDATE_INTERVAL,
-  url: process.env.CLIENT_URL,
-  accessKey: process.env.ACCESS_KEY,
-  secretKey: process.env.SECRET_KEY,
-  zipGameData: process.env.ZIP_GAME_DATA,
-  useSegments: process.env.USE_SEGMENTS,
-  useUnzip: process.env.USE_UNZIP
-});
+if(process.env.USE_GIT_DATA_REPO && process.env.USE_GIT_DATA_REPO == "true"){
+  console.log(`using git repo for updates...`)
+  DataBuilder = require('./gitDataDownloader');
+  dataBuilder = new DataBuilder({
+    dataPath: dataPath,
+    updateInterval: process.env.UPDATE_INTERVAL,
+    zipGameData: process.env.ZIP_GAME_DATA,
+  });
+
+}else{
+  console.log(`using comlink for updates...`)
+  DataBuilder = require('./dataBuilder');
+  dataBuilder = new DataBuilder({
+    dataPath: dataPath,
+    updateInterval: process.env.UPDATE_INTERVAL,
+    url: process.env.CLIENT_URL,
+    accessKey: process.env.ACCESS_KEY,
+    secretKey: process.env.SECRET_KEY,
+    zipGameData: process.env.ZIP_GAME_DATA,
+    useSegments: process.env.USE_SEGMENTS,
+    useUnzip: process.env.USE_UNZIP
+  });
+}
+
 
 const statCalculator = require('swgoh-stat-calc');
 const helmet = require('helmet');

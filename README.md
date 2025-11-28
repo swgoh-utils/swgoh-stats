@@ -18,6 +18,7 @@ For further help using this tool see the [wiki](https://github.com/swgoh-utils/s
 - MAX_RARITY - defaults 7
 - MAX_RELIC - defaults to 11 (relic 8)
 - MAX_MOD_LEVEL - defaults to 15
+- USE_GIT_DATA_REPO - set to use git data repo for updates instead of comlink, recommended for low memory setups. Uses https://github.com/swgoh-utils/gamedata. Defaults to false
 - USE_SEGMENTS - Fetches the game data using segments parameter. Fetching in segments may be less memory intensive, but may take longer.  Defaults to false.
 - USE_UNZIP - Fetches the localization bundle game data as either a base64 string that needs to be unzipped, or a JSON object that has already been unzipped and processed.  Fetching as JSON is more memory intensive for the client.  Defaults to false (client does not request bundle as unzipped files in a json object).
 - ZIP_GAME_DATA - creates/updates a zip of the game data during game data updtes.  Used when bundling a zip of the game data with the docker container which is used to speed up startup when no data exists.  This is not necessary to enable if not building a container to publish.  Defaults to false.
