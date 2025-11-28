@@ -12,6 +12,7 @@ const statEnum = {};
 const localizationMap = {};
 const ZIP_FILE = path.join(__dirname, `statCalcData.zip`);
 const INCLUDE_PVE_UNITS = false;
+const LOCALIZATION_LANG = process.env.LOCALIZATION_LANG
 
 for (const [key, value] of Object.entries(statEnumMap)) {
   if (value.tableKey) {
@@ -351,7 +352,9 @@ module.exports = class DataBuilder {
     try {
       console.log(`Updating localization to version ${versionString}...`);
       const unzip = this.useUnzip;
-      let localizationBundle = await this.clientStub.getLocalizationBundle(versionString, unzip);
+      let updateVersionString = versionString
+      if(LOCALIZATION_LANG) updateVersionString += `:${LOCALIZATION_LANG.toUpperCase()}`
+      let localizationBundle = await this.clientStub.getLocalizationBundle(updateVersionString, unzip);
       this._version.language = versionString;
       this._version.languages = [];
 
@@ -372,6 +375,7 @@ module.exports = class DataBuilder {
 
       // iterate languages
       for (let [language, content] of localizationBundle) {
+        if(!content) continue
         let langMap;
 
         if (!unzip) {
