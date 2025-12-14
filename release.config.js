@@ -9,14 +9,6 @@ module.exports = {
       },
     ],
     '@semantic-release/release-notes-generator',
-    '@semantic-release/changelog',
-    [
-      "@semantic-release/npm",
-      {
-        // update package.json but do not publish to npm
-        "npmPublish": false,
-      }
-    ],
     [
       '@semantic-release/exec',
       {
@@ -25,6 +17,5 @@ module.exports = {
       }
     ],
     "@semantic-release/github",
-    "@semantic-release/git",
   ],
 };
