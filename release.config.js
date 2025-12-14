@@ -10,6 +10,13 @@ module.exports = {
     ],
     '@semantic-release/release-notes-generator',
     [
+      "@semantic-release/npm",
+      {
+        // update package.json but do not publish to npm
+        "npmPublish": false,
+      }
+    ],
+    [
       '@semantic-release/exec',
       {
         "prepareCmd": "./prepareRelease.sh ${nextRelease.version}",
@@ -17,5 +24,6 @@ module.exports = {
       }
     ],
     "@semantic-release/github",
+    "@semantic-release/git"
   ],
 };
