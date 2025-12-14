@@ -7,13 +7,14 @@
     "start": "node app.js"
   },
   "dependencies": {
-    "@swgoh-utils/comlink": "^1.4.1",
-    "compression": "^1.7.4",
-    "express": "^4.18.2",
-    "helmet": "^7.1.0",
+    "@swgoh-utils/comlink": "^2.0.0",
+    "@swgoh-utils/swgoh-stat-calc": "^1.0.1",
+    "compression": "^1.8.1",
+    "cors": "^2.8.5",
+    "express": "^5.2.1",
+    "helmet": "^8.1.0",
     "jszip": "^3.10.1",
-    "mkdirp": "^1.0.4",
-    "swgoh-stat-calc": "github:swgoh-utils/swgoh-stat-calc#895816e"
+    "mkdirp": "^3.0.1"
   },
   "engines": {
     "node": ">=20"
@@ -23,11 +24,9 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@semantic-release/changelog": "^6.0.3",
-    "@semantic-release/exec": "^6.0.3",
+    "@semantic-release/exec": "^7.1.0",
     "@semantic-release/git": "^10.0.1",
-    "@semantic-release/github": "^9.0.3",
-    "conventional-changelog-conventionalcommits": "^6.1.0",
-    "semantic-release": "^21.0.6"
+    "conventional-changelog-conventionalcommits": "^9.1.0",
+    "semantic-release": "^25.0.2"
   }
 }
