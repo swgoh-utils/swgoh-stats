@@ -3,6 +3,8 @@ const mkdirp = require('mkdirp');
 const fs = require('fs');
 const path = require('path');
 const util = require('util');
+const https = require('https');
+const http = require('http');
 const JSZip = require('jszip');
 const { createInterface } = require('readline');
 const { once } = require('events');
@@ -12,6 +14,8 @@ const statEnum = {};
 const localizationMap = {};
 const ZIP_FILE = path.join(__dirname, `statCalcData.zip`);
 const INCLUDE_PVE_UNITS = false;
+const DEFAULT_GITHUB_GAMEDATA_URL = 'https://raw.githubusercontent.com/swgoh-utils/gamedata/main/gameData.json';
+const MAX_GAMEDATA_BYTES = 250 * 1024 * 1024;
 
 for (const [key, value] of Object.entries(statEnumMap)) {
   if (value.tableKey) {
@@ -78,6 +82,19 @@ module.exports = class DataBuilder {
     this.zipGameData = (options.zipGameData && options.zipGameData === "true") ? true : false;
     this.useSegments = (options.useSegments && options.useSegments === "true") ? true : false;
     this.useUnzip = (options.useUnzip && options.useUnzip === "true") ? true : false;
+
+    this.useGithubGamedata = parseBool(options.useGithubGamedata);
+    this.gameDataUrl = options.gameDataUrl;
+    this.gameDataUrlInterval = options.gameDataUrlInterval;
+    if (this.useGithubGamedata && !this.gameDataUrl) {
+      this.gameDataUrl = DEFAULT_GITHUB_GAMEDATA_URL;
+    }
+    if (this.gameDataUrl) {
+      console.log(`Game data source set to URL: ${this.gameDataUrl}`);
+      if (this.useGithubGamedata && this.gameDataUrl !== DEFAULT_GITHUB_GAMEDATA_URL) {
+        console.log(`USE_GITHUB_GAMEDATA is enabled, but GAME_DATA_URL overrides the default.`);
+      }
+    }
 
     this.clientStub = new ComlinkStub({
       url: options.url || 'http://localhost:3000',
@@ -260,6 +277,27 @@ module.exports = class DataBuilder {
     let updated = false;
 
     try {
+      if (this.gameDataUrl) {
+        console.log(`Using GAME_DATA_URL for game data updates. Comlink game data updates are disabled.`);
+        const interval = Number(this.gameDataUrlInterval || this.updateInterval || 5);
+        this._updaterInterval = setInterval(async () => {
+          try {
+            updated = await this.updateCheck(undefined, undefined);
+          } catch (error) {
+            console.error(`Error updating game data from URL: ${error.message}`);
+            callback(error);
+            return;
+          }
+
+          if (updated) {
+            callback(null, this.gameData);
+          }
+        }, interval * 60 * 1000);
+
+        await this.updateCheck(undefined, undefined, true);
+        return this.gameData;
+      }
+
       let version = await this._updateHook(async (receivedVersion) => {
         try {
           updated = await this.updateCheck(receivedVersion.latestGamedataVersion, receivedVersion.latestLocalizationBundleVersion);
@@ -292,8 +330,25 @@ module.exports = class DataBuilder {
     return force || !isStringEqual(this._version.language, versionString);
   }
 
-  async updateGameData(versionString) {
+  async updateGameData(versionString, force = false) {
     try {
+      if (this.gameDataUrl) {
+        console.log(`Updating game data from URL${this.useGithubGamedata ? ' (USE_GITHUB_GAMEDATA enabled)' : ''}...`);
+        const payload = await this.fetchGameDataFromUrl();
+        const { gameData, version } = normalizeGameDataPayload(payload);
+        const resolvedVersion = version || versionString;
+
+        if (!force && resolvedVersion && isStringEqual(this._version.game, resolvedVersion)) {
+          console.log(`Game data version unchanged (${resolvedVersion}); skipping update.`);
+          return false;
+        }
+
+        this.gameData = gameData;
+        this._version.game = resolvedVersion || new Date().toISOString();
+        await this.writeFile('gameData', this.gameData);
+        return true;
+      }
+
       console.log(`Updating game data to version ${versionString}...`);
 
       let gameData;
@@ -342,6 +397,7 @@ module.exports = class DataBuilder {
 
       this.gameData = buildData(gameData);
       await this.writeFile('gameData', this.gameData);
+      return true;
     } catch(error) {
       throw(error);
     }
@@ -398,13 +454,26 @@ module.exports = class DataBuilder {
       let updated = false;
       let metaData;
       let enums;
-      if (!gameVersion || !localizationVersion) {
-        metaData = await this.clientStub.getMetaData();
-        gameVersion = metaData.latestGamedataVersion;
-        localizationVersion = metaData.latestLocalizationBundleVersion;
+      if (!localizationVersion) {
+        try {
+          metaData = await this.clientStub.getMetaData();
+          localizationVersion = metaData.latestLocalizationBundleVersion;
+          if (!this.gameDataUrl) {
+            gameVersion = metaData.latestGamedataVersion;
+          }
+        } catch (error) {
+          console.error(`Unable to fetch metadata for localization updates: ${error.message}`);
+        }
       }
-      const shouldUpdateGameData = this.gameDataNeedsUpdate(gameVersion, force);
-      const shouldUpdateLocalization = this.localizationNeedsUpdate(localizationVersion, force);
+      if (!this.gameDataUrl && !gameVersion) {
+        if (!metaData) metaData = await this.clientStub.getMetaData();
+        gameVersion = metaData.latestGamedataVersion;
+      }
+      const shouldUpdateGameData = this.gameDataUrl ? true : this.gameDataNeedsUpdate(gameVersion, force);
+      const shouldUpdateLocalization = localizationVersion ? this.localizationNeedsUpdate(localizationVersion, force) : false;
+      if (!localizationVersion) {
+        console.log(`Skipping localization update because no localization version is available.`);
+      }
 
       if (!metaData && (shouldUpdateGameData || shouldUpdateLocalization)) {
         metaData = await this.clientStub.getMetaData();
@@ -413,8 +482,7 @@ module.exports = class DataBuilder {
       }
 
       if (shouldUpdateGameData) {
-        await this.updateGameData(gameVersion);
-        updated = true;
+        updated = (await this.updateGameData(gameVersion, force)) || updated;
       }
 
       if (shouldUpdateLocalization) {
@@ -450,6 +518,60 @@ module.exports = class DataBuilder {
       throw(error);
     }
   }
+
+  async fetchGameDataFromUrl() {
+    const url = this.gameDataUrl;
+    if (!url) throw new Error('GAME_DATA_URL is not set');
+
+    let parsed;
+    try {
+      parsed = new URL(url);
+    } catch (error) {
+      throw new Error(`Invalid GAME_DATA_URL: ${error.message}`);
+    }
+
+    if (!['https:', 'http:'].includes(parsed.protocol)) {
+      throw new Error(`Unsupported GAME_DATA_URL protocol: ${parsed.protocol}`);
+    }
+    if (parsed.protocol !== 'https:') {
+      console.warn(`GAME_DATA_URL is not HTTPS. This may be insecure.`);
+    }
+
+    return new Promise((resolve, reject) => {
+      const lib = parsed.protocol === 'https:' ? https : http;
+      const req = lib.get(url, { headers: { 'Accept': 'application/json' } }, (res) => {
+        if (res.statusCode && res.statusCode >= 400) {
+          reject(new Error(`GAME_DATA_URL request failed with status ${res.statusCode}`));
+          res.resume();
+          return;
+        }
+
+        let bytes = 0;
+        const chunks = [];
+        res.on('data', (chunk) => {
+          bytes += chunk.length;
+          if (bytes > MAX_GAMEDATA_BYTES) {
+            req.destroy(new Error(`GAME_DATA_URL response exceeds ${MAX_GAMEDATA_BYTES} bytes`));
+            return;
+          }
+          chunks.push(chunk);
+        });
+        res.on('end', () => {
+          try {
+            const body = Buffer.concat(chunks).toString('utf8');
+            resolve(JSON.parse(body));
+          } catch (error) {
+            reject(new Error(`Failed to parse GAME_DATA_URL JSON: ${error.message}`));
+          }
+        });
+      });
+
+      req.on('error', reject);
+      req.setTimeout(15000, () => {
+        req.destroy(new Error('GAME_DATA_URL request timed out'));
+      });
+    });
+  }
 }
 
 function buildMetaData(metaData) {
@@ -459,6 +581,31 @@ function buildMetaData(metaData) {
     const config = metaData.config[i];
     configMap[config.key] = config.value;
   }
+}
+
+function parseBool(value) {
+  if (typeof value === 'string') return value.toLowerCase() === 'true';
+  return Boolean(value);
+}
+
+function normalizeGameDataPayload(payload) {
+  if (!payload || typeof payload !== 'object') {
+    throw new Error('GAME_DATA_URL returned invalid JSON payload');
+  }
+
+  if (payload.data && typeof payload.data === 'object' && payload.data.unitData) {
+    return { gameData: payload.data, version: payload.version };
+  }
+
+  if (payload.unitData && payload.gearData && payload.modSetData) {
+    return { gameData: payload, version: payload.version };
+  }
+
+  if (payload.units && payload.equipment && payload.statProgression) {
+    return { gameData: buildData(payload), version: payload.version };
+  }
+
+  throw new Error('GAME_DATA_URL payload does not match expected game data formats');
 }
 
 function getMasteryMultiplierName(primaryStatID, tags) {

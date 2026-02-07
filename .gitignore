@@ -2,6 +2,10 @@ bin/
 build/
 dist/
 
+# AI Coding tools
+.claude
+.codex
+
 # Logs
 logs
 *.log

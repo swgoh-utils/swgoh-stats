@@ -10,6 +10,9 @@ const dataPath = process.env.DATA_PATH || 'statCalcData';
 const dataBuilder = new DataBuilder({
   dataPath: dataPath,
   updateInterval: process.env.UPDATE_INTERVAL,
+  gameDataUrl: process.env.GAME_DATA_URL,
+  useGithubGamedata: process.env.USE_GITHUB_GAMEDATA,
+  gameDataUrlInterval: process.env.GAME_DATA_URL_POLL_INTERVAL,
   url: process.env.CLIENT_URL,
   accessKey: process.env.ACCESS_KEY,
   secretKey: process.env.SECRET_KEY,
