@@ -1,10 +1,10 @@
-FROM node:20-alpine AS builder
+FROM node:24-alpine AS builder
 
 COPY package*.json ./
 # don't install dev dependencies for the docker image
 RUN npm install --omit=dev
 
-FROM node:20-alpine AS app
+FROM node:24-alpine AS app
 WORKDIR /app
 
 COPY --from=builder node_modules node_modules/

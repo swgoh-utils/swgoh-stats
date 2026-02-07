@@ -1,8 +1,11 @@
 const express = require('express');
-// init express Router
-const router = express.Router();
+const cors = require('cors');
+const helmet = require('helmet');
+const compression = require('compression');
+const statCalculator = require('@swgoh-utils/swgoh-stat-calc');
 const fs = require('fs');
 const path = require('path');
+
 const DataBuilder = require('./dataBuilder');
 
 const dataPath = process.env.DATA_PATH || 'statCalcData';
@@ -21,17 +24,12 @@ const dataBuilder = new DataBuilder({
   useUnzip: process.env.USE_UNZIP
 });
 
-const statCalculator = require('swgoh-stat-calc');
-const helmet = require('helmet');
-const compression = require('compression');
+// init express Router
+const router = express.Router();
 const app = express();
 
 app.use(compression());
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
+app.use(cors());
 
 app.use('/', express.static(path.join(__dirname, 'public')));
 app.use(helmet());
@@ -80,13 +78,6 @@ app.use('/', express.static(dataPath));
 // ******************************
 // ***** All Express Routes *****
 // ******************************
-
-// ensure proper support for CORS
-router.options("/api/*", function(req, res, next){
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
-  res.sendStatus(204);
-});
 
 // add incoming timestamp
 router.use((req,res,next) => {req.timestamp = new Date(); next();});
