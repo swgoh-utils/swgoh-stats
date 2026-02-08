@@ -34,7 +34,7 @@ app.use(helmet());
 const MAX_LEVEL = process.env.MAX_LEVEL || 85;
 const MAX_GEAR_LEVEL = process.env.MAX_GEAR_LEVEL || 13;
 const MAX_RARITY = process.env.MAX_RARITY || 7;
-const MAX_RELIC = process.env.MAX_RELIC || 11;
+const MAX_RELIC = process.env.MAX_RELIC || 12;
 const MAX_MOD_PIPS = process.env.MAX_MOD_PIPS || 6;
 const MAX_MOD_LEVEL = process.env.MAX_MOD_LEVEL || 15;
 const MAX_MOD_TIER = process.env.MAX_MOD_TIER || 5;
