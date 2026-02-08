@@ -10,6 +10,9 @@ For further help using this tool see the [wiki](https://github.com/swgoh-utils/s
 - ACCESS_KEY - the access key to use for signing messages to the swgoh-comlink service. Defaults to "" which disables HMAC signing.
 - SECRET_KEY - the secret key to use for signing messages to the swgoh-comlink service. Defaults to "" which disables HMAC signing.
 - CLIENT_URL - the url of the swgoh-comlink service to use for building the game data
+- GAME_DATA_URL - optional URL to retrieve pre-built game data JSON (overrides swgoh-comlink for game data)
+- USE_GITHUB_GAMEDATA - when true, defaults to using GAME_DATA_URL of "https://raw.githubusercontent.com/swgoh-utils/gamedata/main/gameData.json"
+- GAME_DATA_URL_POLL_INTERVAL - how often to check GAME_DATA_URL for updates, in minutes. Defaults to UPDATE_INTERVAL.
 - DATA_PATH - used to set the directory where game data assets are stored. When run as a docker container, this should be defined as a volume with an absolute path on the local host, such as `-v $(pwd)/statCalcData:/app/statCalcData`.  The default value is the `statCalcData` directory in the current working directory, which in docker is `/app`.
 - UPDATE_INTERVAL - how often to check for game data updates, in minutes.  Defaults to 5 minutes.
 - MAX_LEVEL - defaults to 85
