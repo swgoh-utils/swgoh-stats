@@ -16,7 +16,7 @@ For further help using this tool see the [wiki](https://github.com/swgoh-utils/s
 - MAX_GEAR_LEVEL - defaults to 13
 - MAX_MOD_PIPS - defaults to 6
 - MAX_RARITY - defaults 7
-- MAX_RELIC - defaults to 11 (relic 8)
+- MAX_RELIC - defaults to 12 (relic 10)
 - MAX_MOD_LEVEL - defaults to 15
 - USE_SEGMENTS - Fetches the game data using segments parameter. Fetching in segments may be less memory intensive, but may take longer.  Defaults to false.
 - USE_UNZIP - Fetches the localization bundle game data as either a base64 string that needs to be unzipped, or a JSON object that has already been unzipped and processed.  Fetching as JSON is more memory intensive for the client.  Defaults to false (client does not request bundle as unzipped files in a json object).
