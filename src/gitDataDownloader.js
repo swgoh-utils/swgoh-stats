@@ -236,9 +236,12 @@ module.exports = class DataBuilder {
     try {
       console.log(`Updating game data to version ${versionString}...`);
       let gameData = await this.getGitFileData('gameData', versionString)
-      if(gameData) console.log(`Fetched gameData for version ${versionString} from git repo successfully...`)
-      this._version.game = versionString;
-      await this.writeFile('gameData', this.gameData);
+      if(gameData){
+        console.log(`Fetched gameData for version ${versionString} from git repo successfully...`)
+        this._version.game = versionString;
+        this.gameData = gameData;
+        await this.writeFile('gameData', this.gameData);
+      }
     } catch(error) {
       throw(error);
     }
