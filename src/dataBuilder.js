@@ -1,5 +1,5 @@
 const ComlinkStub = require('@swgoh-utils/comlink');
-const mkdirp = require('mkdirp');
+const { mkdirp } = require('mkdirp')
 const fs = require('fs');
 const path = require('path');
 const util = require('util');

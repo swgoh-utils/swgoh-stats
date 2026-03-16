@@ -16,7 +16,7 @@ For further help using this tool see the [wiki](https://github.com/swgoh-utils/s
 - MAX_GEAR_LEVEL - defaults to 13
 - MAX_MOD_PIPS - defaults to 6
 - MAX_RARITY - defaults 7
-- MAX_RELIC - defaults to 11 (relic 8)
+- MAX_RELIC - defaults to 12 (relic 10)
 - MAX_MOD_LEVEL - defaults to 15
 - USE_GIT_DATA_REPO - set to use git data repo for updates instead of comlink, recommended for low memory setups. Uses https://github.com/swgoh-utils/gamedata. Defaults to false
 - USE_SEGMENTS - Fetches the game data using segments parameter. Fetching in segments may be less memory intensive, but may take longer.  Defaults to false.

@@ -1,6 +1,8 @@
 const express = require('express');
-// init express Router
-const router = express.Router();
+const cors = require('cors');
+const helmet = require('helmet');
+const compression = require('compression');
+const statCalculator = require('@swgoh-utils/swgoh-stat-calc');
 const fs = require('fs');
 const path = require('path');
 let DataBuilder, dataBuilder
@@ -31,17 +33,12 @@ if(process.env.USE_GIT_DATA_REPO && process.env.USE_GIT_DATA_REPO == "true"){
 }
 
 
-const statCalculator = require('swgoh-stat-calc');
-const helmet = require('helmet');
-const compression = require('compression');
+// init express Router
+const router = express.Router();
 const app = express();
 
 app.use(compression());
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
+app.use(cors());
 
 app.use('/', express.static(path.join(__dirname, 'public')));
 app.use(helmet());
@@ -49,7 +46,7 @@ app.use(helmet());
 const MAX_LEVEL = process.env.MAX_LEVEL || 85;
 const MAX_GEAR_LEVEL = process.env.MAX_GEAR_LEVEL || 13;
 const MAX_RARITY = process.env.MAX_RARITY || 7;
-const MAX_RELIC = process.env.MAX_RELIC || 11;
+const MAX_RELIC = process.env.MAX_RELIC || 12;
 const MAX_MOD_PIPS = process.env.MAX_MOD_PIPS || 6;
 const MAX_MOD_LEVEL = process.env.MAX_MOD_LEVEL || 15;
 const MAX_MOD_TIER = process.env.MAX_MOD_TIER || 5;
@@ -90,13 +87,6 @@ app.use('/', express.static(dataPath));
 // ******************************
 // ***** All Express Routes *****
 // ******************************
-
-// ensure proper support for CORS
-router.options("/api/*", function(req, res, next){
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
-  res.sendStatus(204);
-});
 
 // add incoming timestamp
 router.use((req,res,next) => {req.timestamp = new Date(); next();});
