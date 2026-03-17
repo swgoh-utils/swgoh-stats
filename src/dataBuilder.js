@@ -12,6 +12,20 @@ const statEnum = {};
 const localizationMap = {};
 const ZIP_FILE = path.join(__dirname, `statCalcData.zip`);
 const INCLUDE_PVE_UNITS = false;
+const GAME_DATA_ITEMS = String(4n | 8n | 32n | 4194304n | 33554432n | 68719476736n | 137438953472n);
+
+// integer values *MUST* be designated as BigInts (using the 'n' notation) to be properly handled by JavaScript
+// and not treated as floats or overflowing the 2^32 standard max.
+//public enum GameDataItemsEnum
+// {
+// 	public const GameDataItemsEnum SkillDefinitions = 4;
+// 	public const GameDataItemsEnum EquipmentDefinitions = 8;
+// 	public const GameDataItemsEnum AllTables = 32;
+// 	public const GameDataItemsEnum StatProgression = 4194304;
+// 	public const GameDataItemsEnum StatMod = 33554432;
+// 	public const GameDataItemsEnum RelicTierDefinitions = 68719476736;
+// 	public const GameDataItemsEnum UnitDefinitions = 137438953472;
+// }
 
 for (const [key, value] of Object.entries(statEnumMap)) {
   if (value.tableKey) {
@@ -75,9 +89,10 @@ module.exports = class DataBuilder {
   constructor(options = {}) {
     this.dataPath = options.dataPath;
     this.gameData = {};
-    this.zipGameData = (options.zipGameData && options.zipGameData === "true") ? true : false;
-    this.useSegments = (options.useSegments && options.useSegments === "true") ? true : false;
-    this.useUnzip = (options.useUnzip && options.useUnzip === "true") ? true : false;
+    this.zipGameData = !!(options.zipGameData && options.zipGameData === "true");
+    this.useSegments = !!(options.useSegments && options.useSegments === "true");
+    this.useItems = !!(options.useItems && options.useItems === "true");
+    this.useUnzip = !!(options.useUnzip && options.useUnzip === "true");
 
     this.clientStub = new ComlinkStub({
       url: options.url || 'http://localhost:3000',
@@ -297,7 +312,10 @@ module.exports = class DataBuilder {
       console.log(`Updating game data to version ${versionString}...`);
 
       let gameData;
-      if (this.useSegments) {
+      if (this.useItems) {
+        console.log(`Fetching game data using items parameter`);
+        gameData = await this.clientStub.getGameDataWithItems(versionString, GAME_DATA_ITEMS, INCLUDE_PVE_UNITS);
+      } else if (this.useSegments) {
         const { GameDataSegment } = await this.clientStub.getEnums();
 
         const collections = [
@@ -615,9 +633,9 @@ function parseTableList(tableList, data) {
         c = data.cr.modRarityLevelCR = {};
         g = data.gp.modRarityLevelTierGP = {};
         table.row.forEach( row => {
-          if ( row.key.slice(-1) == "0") { // only 'select' set 0, as set doesn't affect CR or GP
+          if ( row.key.slice(-1) === "0") { // only 'select' set 0, as set doesn't affect CR or GP
             let [ pips, level, tier, set ] = row.key.split(":");
-            if ( +tier == 1) { // tier doesn't affect CR, so only save for tier 1
+            if ( +tier === 1) { // tier doesn't affect CR, so only save for tier 1
               c[ pips ] = c[ pips ] || {}; // ensure table exists for that rarity
               c[ pips ][ level ] = +row.value;
             }
@@ -715,7 +733,7 @@ function parseSkills(skillList) {
       id: skill.id,
       maxTier: skill.tier.length + 1,
       powerOverrideTags: {},
-      isZeta: skill.tier.slice(-1)[0].powerOverrideTag == "zeta"
+      isZeta: skill.tier.slice(-1)[0].powerOverrideTag === "zeta"
     };
     skill.tier.forEach( (tier, i) => {
       if (tier.powerOverrideTag) {
@@ -750,7 +768,7 @@ function buildUnitData(unitsList, skillList, statTables) {
   const data = {};
 
   baseList.forEach( unit => {
-    if ( unit.combatType == 1 ) { // character
+    if ( unit.combatType === 1 ) { // character
       const tierData = {};
       const relicData = {};
       unit.unitTier.forEach( gearTier => {
@@ -823,5 +841,5 @@ function buildStatProgressionList(statProgressionList) {
 }
 
 function isStringEqual(a, b) {
-  return (a && b && (a.localeCompare(b) == 0));
+  return (a && b && (a.localeCompare(b) === 0));
 }

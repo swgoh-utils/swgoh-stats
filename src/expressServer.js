@@ -18,6 +18,7 @@ const dataBuilder = new DataBuilder({
   secretKey: process.env.SECRET_KEY,
   zipGameData: process.env.ZIP_GAME_DATA,
   useSegments: process.env.USE_SEGMENTS,
+  useItems: process.env.USE_ITEMS,
   useUnzip: process.env.USE_UNZIP
 });
 
@@ -233,7 +234,7 @@ router.post('/api/characters', async (req, res, next) => {
 
   function addRosterCalcPromises(promiseArray, roster, options) {
     roster.forEach( unit => {
-      if (gameData.unitData[unit.defId].combatType == 1) {
+      if (gameData.unitData[unit.defId].combatType === 1) {
         promiseArray.push(new Promise( (resolve, reject) => {
           unit.stats = statCalculator.calcCharStats(unit, options);
           resolve(unit);
@@ -272,7 +273,7 @@ router.post('/api/ships', async (req, res, next) => {
     let crew = {};
     roster.forEach( unit => crew[ unit.defId ] = unit );
     roster.forEach( unit => {
-      if (gameData.unitData[unit.defId].combatType == 2) {
+      if (gameData.unitData[unit.defId].combatType === 2) {
         promiseArray.push(new Promise( (resolve, reject) => {
           unit.stats = statCalculator.calcShipStats(unit, gameData.unitData[unit.defId].crew.map(id => crew[id]), options);
           resolve(unit);
@@ -290,7 +291,7 @@ router.post(['/api','/api/characters','/api/ships'], async (req, res, next) => {
   res.json(res.roster);
   res.timestamp = new Date();
   let calcTime = res.timestamp - req.calcTime;
-  req.log = `${decodeURI(req.originalUrl)} processed ${res.count} unit${res.count == 1 ? '':'s'} in ${req.rosterType} format.\n\t${res.timestamp - req.timestamp} - ${calcTime} - ${calcTime / res.count}`;
+  req.log = `${decodeURI(req.originalUrl)} processed ${res.count} unit${res.count === 1 ? '':'s'} in ${req.rosterType} format.\n\t${res.timestamp - req.timestamp} - ${calcTime} - ${calcTime / res.count}`;
   next();
 });
 
@@ -329,7 +330,7 @@ router.get('/api', (req, res, next) => {
   req.units = [];
   Promise.all( Object.keys(gameData.unitData).map( baseID => {
     return new Promise( (resolve, reject) => {
-      resolve(gameData.unitData[baseID].combatType == 1 ?
+      resolve(gameData.unitData[baseID].combatType === 1 ?
               statCalculator.calcCharStats({defId: baseID}, req.options) :
               statCalculator.calcShipStats({defId: baseID}, gameData.unitData[ baseID ].crew.map( charID => { return {defId: charID}; }), req.options)
              );
@@ -347,7 +348,7 @@ router.get('/api/characters', (req, res, next) => {
   req.units = [];
   Promise.all( Object.keys(gameData.unitData).map( baseID => {
     return new Promise( (resolve, reject) => {
-      resolve( gameData.unitData[baseID].combatType == 1 ? statCalculator.calcCharStats({defId: baseID}, req.options) : undefined );
+      resolve( gameData.unitData[baseID].combatType === 1 ? statCalculator.calcCharStats({defId: baseID}, req.options) : undefined );
     }).then( stats => {
       if (stats)
         req.units.push( {defId: baseID, stats: stats} );
@@ -361,7 +362,7 @@ router.get('/api/ships', (req, res, next) => {
   req.units = [];
   Promise.all( Object.keys(gameData.unitData).map( baseID => {
     return new Promise( (resolve, reject) => {
-      resolve( gameData.unitData[baseID].combatType == 1 ? undefined : statCalculator.calcShipStats({defId: baseID}, gameData.unitData[ baseID ].crew.map( charID => { return {defId: charID}; }), req.options) );
+      resolve( gameData.unitData[baseID].combatType === 1 ? undefined : statCalculator.calcShipStats({defId: baseID}, gameData.unitData[ baseID ].crew.map(charID => { return {defId: charID}; }), req.options) );
     }).then( stats => {
       if (stats)
         req.units.push( {defId: baseID, stats: stats} );
@@ -372,7 +373,7 @@ router.get('/api/ships', (req, res, next) => {
 });
 
 router.get('/api/characters/:baseID', (req, res, next) => {
-  if (gameData.unitData[req.params.baseID].combatType == 1) {
+  if (gameData.unitData[req.params.baseID].combatType === 1) {
     req.unit = { defId: req.params.baseID, stats: statCalculator.calcCharStats({defId: req.params.baseID}, req.options) };
     res.count = 1;
     next();
@@ -383,7 +384,7 @@ router.get('/api/characters/:baseID', (req, res, next) => {
 });
 
 router.get('/api/ships/:baseID', (req, res, next) => {
-  if (gameData.unitData[req.params.baseID].combatType == 2) {
+  if (gameData.unitData[req.params.baseID].combatType === 2) {
     console.log(JSON.stringify(req.options.useValues));
     req.unit = { defId: req.params.baseID, stats: statCalculator.calcShipStats({defId: req.params.baseID}, gameData.unitData[ req.params.baseID ].crew.map( charID => { return {defId: charID}; }), req.options ) };
     res.count = 1;
@@ -398,7 +399,7 @@ router.get('/api/ships/:baseID', (req, res, next) => {
 router.get(['/api','/api/characters','/api/characters/:baseID','/api/ships','/api/ships/:baseID'], (req, res, next) => {
   res.json( req.units || req.unit );
   res.timestamp = new Date();
-  req.log = `${decodeURI(req.originalUrl)} processed ${res.count} unit${res.count == 1 ? '':'s'}.\n  useValues: ${JSON.stringify(req.options.useValues)}\n\t${res.timestamp - req.timestamp} - ${ (res.timestamp - req.timestamp) / res.count}`;
+  req.log = `${decodeURI(req.originalUrl)} processed ${res.count} unit${res.count === 1 ? '':'s'}.\n  useValues: ${JSON.stringify(req.options.useValues)}\n\t${res.timestamp - req.timestamp} - ${ (res.timestamp - req.timestamp) / res.count}`;
   next()
 });
 
@@ -422,7 +423,7 @@ router.use( (err, req, res, next) => {
     console.error(`Error after sending response to ${decodeURI(req.originalUrl)}`);
     return next(err)
   } else {
-    if (res.statusCode == 200) res.status(500); // general error
+    if (res.statusCode === 200) res.status(500); // general error
     res.send(err.message);
     console.error(`Error code ${res.statusCode}: ${req.method} ${decodeURI(req.originalUrl)}\nmessage: ${err.message}\nstack: ${err.stack}`);
   }
