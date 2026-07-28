@@ -1,5 +1,6 @@
 const ComlinkStub = require('@swgoh-utils/comlink');
 const { mkdirp } = require('mkdirp');
+const zlib = require('node:zlib');
 const fs = require('fs');
 const path = require('path');
 const util = require('util');
@@ -142,7 +143,7 @@ module.exports = class DataBuilder {
     let version;
 
     try {
-      version = await this.gitFetch('allVersions');
+      version = await this.gitFetch('allVersions.json');
       this._enablePolling(callback, version);
     } catch(error) {
       throw(error);
@@ -186,7 +187,7 @@ module.exports = class DataBuilder {
     let version = { gameVersion, localeVersion };
     this._updaterInterval = setInterval(async () => {
       try {
-        const newVersion = await this.gitFetch('allVersions');
+        const newVersion = await this.gitFetch('allVersions.json');
 
         self._handleVersionNotification(version, newVersion, callback);
       } catch(error) {
@@ -250,7 +251,7 @@ module.exports = class DataBuilder {
   async updateLocalizationBundle(versionString) {
     try {
       console.log(`Updating localization to version ${versionString}...`);
-      let localizationBundle = await this.gitFetch('allVersions');
+      let localizationBundle = await this.gitFetch('allVersions.json');
       if(!localizationBundle) throw(`Error getting allVersions.json from github...`)
 
 
@@ -267,10 +268,10 @@ module.exports = class DataBuilder {
         if(i == 'localeVersion') continue
         if(localizationBundle[i] !== versionString) continue
 
-        let langMap = await this.getGitFileData(i?.replace('.json', ''), versionString)
+        let langMap = await this.getGitFileData(i, versionString)
         if(!langMap) throw(`Error getting ${i} from github...`)
 
-        const lang = i.replace(/(Loc_)|(.txt)|(.json)/gi,'');
+        const lang = i.replace(/(Loc_)|(.txt)|(.json.br)/gi,'');
         const langName = `${lang.toLocaleLowerCase()}`;
         await this.writeFile(langName, langMap);
         this._version.languages.push(langName);
@@ -280,12 +281,21 @@ module.exports = class DataBuilder {
       throw(error);
     }
   }
+  async _decompressData(res){
+    let arrayBuffer = await res.arrayBuffer();
+    let compressedBuffer = Buffer.from(arrayBuffer);
+    let decompressedBuffer = zlib.brotliDecompressSync(compressedBuffer);
+    let jsonString = decompressedBuffer.toString('utf8');
+    if(jsonString) return JSON.parse(jsonString)
+  }
   async gitFetch(file) {
     try{
-      let res = await fetch(`${this.git_url}/${file}.json`)
+      let res = await fetch(`${this.git_url}/${file}`)
       if(res?.status > 400) throw(`fetch error: ${res.status} ${res.statusText}`)
-      if(res?.ok) return await res?.json()
-      //return await res?.json()
+      if(res?.ok){
+        if(file?.endsWith('.br') return await _decompressData(res)
+        return await res?.json(); 
+      }
     }catch(e){
       throw(e)
     }
@@ -304,7 +314,7 @@ module.exports = class DataBuilder {
       let metaData;
       let enums;
       if (!gameVersion || !localizationVersion) {
-        metaData = await this.gitFetch('allVersions');
+        metaData = await this.gitFetch('allVersions.json');
         gameVersion = metaData?.gameVersion;
         localizationVersion = metaData?.localeVersion;
       }
