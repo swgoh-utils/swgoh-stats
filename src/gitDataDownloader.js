@@ -293,7 +293,7 @@ module.exports = class DataBuilder {
       let res = await fetch(`${this.git_url}/${file}`)
       if(res?.status > 400) throw(`fetch error: ${res.status} ${res.statusText}`)
       if(res?.ok){
-        if(file?.endsWith('.br') return await _decompressData(res)
+        if(file?.endsWith('.br')) return await _decompressData(res)
         return await res?.json(); 
       }
     }catch(e){
