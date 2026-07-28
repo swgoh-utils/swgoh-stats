@@ -236,7 +236,7 @@ module.exports = class DataBuilder {
   async updateGameData(versionString) {
     try {
       console.log(`Updating game data to version ${versionString}...`);
-      let gameData = await this.getGitFileData('gameData', versionString)
+      let gameData = await this.getGitFileData('gameData.json', versionString)
       if(gameData){
         console.log(`Fetched gameData for version ${versionString} from git repo successfully...`)
         this._version.game = versionString;
@@ -293,7 +293,7 @@ module.exports = class DataBuilder {
       let res = await fetch(`${this.git_url}/${file}`)
       if(res?.status > 400) throw(`fetch error: ${res.status} ${res.statusText}`)
       if(res?.ok){
-        if(file?.endsWith('.br')) return await _decompressData(res)
+        if(file?.endsWith('.br')) return await this._decompressData(res)
         return await res?.json(); 
       }
     }catch(e){
@@ -322,8 +322,8 @@ module.exports = class DataBuilder {
       const shouldUpdateLocalization = this.localizationNeedsUpdate(localizationVersion, force);
 
       if (!metaData && (shouldUpdateGameData || shouldUpdateLocalization)) {
-        metaData = await this.getGitFileData('meta', gameVersion);
-        enums = await this.getGitFileData('enums', gameVersion);
+        metaData = await this.getGitFileData('meta.json', gameVersion);
+        enums = await this.getGitFileData('enums.json', gameVersion);
         const formattedData = buildMetaData(metaData);
       }
 
