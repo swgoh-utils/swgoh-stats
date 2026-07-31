@@ -10,7 +10,7 @@ WORKDIR /app
 COPY --from=builder node_modules node_modules/
 # copy the rest after
 COPY . .
-RUN chown node:node statCalcData
+RUN chown -R node:node statCalcData
 VOLUME /app/statCalcData
 
 RUN apk update && \
