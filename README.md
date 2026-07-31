@@ -18,9 +18,41 @@ For further help using this tool see the [wiki](https://github.com/swgoh-utils/s
 - MAX_RARITY - defaults 7
 - MAX_RELIC - defaults to 12 (relic 10)
 - MAX_MOD_LEVEL - defaults to 15
+- USE_ITEMS - Fetches the game data using the `items` parameter, requesting only the seven collections the stat calculator actually needs. This is by far the least memory intensive option and is also the fastest.  Requires a swgoh-comlink version that supports the `items` parameter on `/data`.  Takes precedence over USE_SEGMENTS when both are set.  Defaults to false.  See [memory usage](#memory-usage).
 - USE_SEGMENTS - Fetches the game data using segments parameter. Fetching in segments may be less memory intensive, but may take longer.  Defaults to false.
 - USE_UNZIP - Fetches the localization bundle game data as either a base64 string that needs to be unzipped, or a JSON object that has already been unzipped and processed.  Fetching as JSON is more memory intensive for the client.  Defaults to false (client does not request bundle as unzipped files in a json object).
 - ZIP_GAME_DATA - creates/updates a zip of the game data during game data updtes.  Used when bundling a zip of the game data with the docker container which is used to speed up startup when no data exists.  This is not necessary to enable if not building a container to publish.  Defaults to false.
+
+# Memory usage
+
+Game data updates are by far the most memory intensive thing this service does. How the game data
+is fetched from swgoh-comlink makes a large difference, and the default is the most expensive
+option.
+
+Measured on the published `node:24-alpine` image, cold starting from the bundled game data and
+running a full update (game data plus all 14 localization bundles) against a live swgoh-comlink,
+in a container with a hard memory limit and no swap:
+
+| Setting | Peak memory | Result in a 512MB container |
+| --- | --- | --- |
+| _(neither flag set — the default)_ | over 512MB | **killed by the OOM killer** |
+| `USE_SEGMENTS=true` | ~719MB | **killed by the OOM killer** |
+| `USE_ITEMS=true` | ~315MB | completes, with roughly 200MB to spare |
+
+Updating in place over an existing set of game data costs more than a cold start, because the
+current game data stays resident while the new data is fetched and built. With `USE_ITEMS=true`
+that case peaked at ~395MB, still comfortably inside 512MB.
+
+**If you run this service in a container with 512MB of memory or less, set `USE_ITEMS=true`.**
+Without it a game data update will very likely be killed part way through. With it, a cold start
+completes in a 384MB container; 320MB is not enough. Allow 512MB to leave room for updating in
+place.
+
+`USE_ITEMS` requires a swgoh-comlink new enough to support the `items` parameter. If your
+swgoh-comlink is older, use `USE_SEGMENTS=true` and give the container at least 1GB.
+
+Note that `USE_UNZIP=true` substantially increases memory usage during localization updates and
+should be avoided on memory constrained hosts.
 
 # building with docker
 docker build -t swgoh-stats .
