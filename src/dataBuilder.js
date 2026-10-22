@@ -496,7 +496,7 @@ function buildGearData(equipmentList) {
 
   equipmentList.forEach( gear => {
     const statList = gear.equipmentStat.stat;
-    if (statList.length > 0) {
+    if (statList && statList.length > 0) {
       data[ gear.id ] = { stats: {} };
       statList.forEach( stat => {
         data[ gear.id ].stats[ stat.unitStatId ] = +stat.unscaledDecimalValue;
@@ -730,7 +730,7 @@ function parseSkills(skillList) {
 
 function buildUnitData(unitsList, skillList, statTables) {
   const skills = parseSkills(skillList);
-  const baseList = [];
+  const baseUnits = {};
   const unitGMTables = {};
 
   let i = unitsList.length;
@@ -741,15 +741,15 @@ function buildUnitData(unitsList, skillList, statTables) {
       unitGMTables[ unit.baseId ] = unitGMTables[ unit.baseId ] || {}; // ensure unit's table exists
       unitGMTables[ unit.baseId ][ unit.rarity ] = statTables[ unit.statProgressionId ];
 
-      if (unit.rarity === 1) {
-        baseList.push(unit);
-      }
+      // every rarity row carries the same definition data, so any one of them can be the base
+      // (not every unit has a 1-star row, e.g. ADELPHIRANGER starts at 2 stars)
+      baseUnits[ unit.baseId ] = baseUnits[ unit.baseId ] || unit;
     }
   }
 
   const data = {};
 
-  baseList.forEach( unit => {
+  Object.values(baseUnits).forEach( unit => {
     if ( unit.combatType == 1 ) { // character
       const tierData = {};
       const relicData = {};
